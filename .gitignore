@@ -3,6 +3,9 @@
 
 # Log file
 *.log
+Log.*
+log.*
+!Log.java
 
 # BlueJ files
 *.ctxt
@@ -22,3 +25,11 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# config
+service-account-*.json
+*.properties
+host.out
+logApp.log.lck
+src/test/java/com/admoin/action/type/file/Download/AwsS3Test.java
+src/test/java/com/admoin/DataBaseTest.java
