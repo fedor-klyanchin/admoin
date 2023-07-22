@@ -53,7 +53,7 @@ public class Type implements Serializable {
     }
 
     public static String getTableName(String tablePath) {
-        return tablePath.replace("action/type/", "").replace("/", "_");
+        return tablePath.substring(tablePath.lastIndexOf("/") + 1);
     }
 
     public static ConcurrentMap<Integer, Type> getFromDataBase() {
