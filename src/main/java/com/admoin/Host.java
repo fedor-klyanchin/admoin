@@ -69,12 +69,12 @@ public class Host implements Serializable {
         return actionMap;
     }
 
-    public static ConcurrentMap<Integer, List<Link>> getLinkMap() {
-        return linkMap;
+    public static ConcurrentMap<Integer, List<Link>> getActionLinkMap() {
+        return actionLinkMap;
     }
 
-    public static ConcurrentMap<Integer, Type> getTypeMap() {
-        return typeMap;
+    public static ConcurrentMap<Integer, Type> getActionTypeMap() {
+        return actionTypeMap;
     }
 
     // SystemPropertyes
@@ -90,8 +90,8 @@ public class Host implements Serializable {
     public static Map<String, String> config = new HashMap<>();
 
     public static ConcurrentMap<Integer, Action> actionMap = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, List<Link>> linkMap = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Type> typeMap = new ConcurrentHashMap<>();
+    public static ConcurrentMap<Integer, List<Link>> actionLinkMap = new ConcurrentHashMap<>();
+    public static ConcurrentMap<Integer, Type> actionTypeMap = new ConcurrentHashMap<>();
 
     public static ConcurrentMap<Integer, com.admoin.action.type.app.get.Field> actionTypeAppGetField = new ConcurrentHashMap<>();
     public static ConcurrentMap<Integer, Propertie> actionTypeAppGetPropertie = new ConcurrentHashMap<>();
@@ -241,8 +241,8 @@ public class Host implements Serializable {
 
     public static void getDataFromDataBase() {
         actionMap = Action.getFromDataBase();
-        linkMap = Link.getFromDataBase();
-        typeMap = Type.getFromDataBase();
+        actionLinkMap = Link.getFromDataBase();
+        actionTypeMap = Type.getFromDataBase();
 
         actionTypeAppGetField = com.admoin.action.type.app.get.Field.getFromDataBase();
         actionTypeAppGetPropertie = com.admoin.action.type.app.get.Propertie.getFromDataBase();
@@ -363,7 +363,7 @@ public class Host implements Serializable {
     public void startActionMap() {
         Log.logger.info("host.startAction()");
 
-        List<Link> linkCheck = Host.linkMap.get(0);
+        List<Link> linkCheck = Host.actionLinkMap.get(0);
         List<Link> linkCheckNew = new ArrayList<>();
 
         do {
@@ -381,7 +381,7 @@ public class Host implements Serializable {
                     }
                 }
 
-                if (action.isCompleted() && Host.linkMap.containsKey(link.getToId())) {
+                if (action.isCompleted() && Host.actionLinkMap.containsKey(link.getToId())) {
                     linkCheckNew.addAll(getLinkToNextAction(link, action.getResult()));
                 }
             });
@@ -397,7 +397,7 @@ public class Host implements Serializable {
 
     private List<Link> getLinkToNextAction(Link link, String source) {
         List<Link> linkCheckNew = new ArrayList<>();
-        Host.linkMap.get(link.getToId()).forEach(linkMapItem -> {
+        Host.actionLinkMap.get(link.getToId()).forEach(linkMapItem -> {
             if (linkMapItem.getFromFalseResult().equals(link.isActionResultEqualsFalse())) {
                 linkMapItem.setSource(source);
                 linkCheckNew.add(linkMapItem);
