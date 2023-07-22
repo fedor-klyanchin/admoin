@@ -136,13 +136,13 @@ public class HostTest {// configVersion = Host.properties.getProperty(App.getCon
         List<Link> linkList2 = new ArrayList<>();
         linkList2.add(new Link(2, 4, false));
 
-        Host.linkMap.clear();
-        Host.linkMap.put(0, linkList0);
-        Host.linkMap.put(1, linkList1);
-        Host.linkMap.put(2, linkList2);
+        Host.actionLinkMap.clear();
+        Host.actionLinkMap.put(0, linkList0);
+        Host.actionLinkMap.put(1, linkList1);
+        Host.actionLinkMap.put(2, linkList2);
 
-        Host.typeMap.clear();
-        Host.typeMap.put(1, new Type(1, "file.Exists", null));
+        Host.actionTypeMap.clear();
+        Host.actionTypeMap.put(1, new Type(1, "file.Exists", null));
 
         Host.actionTypeFileExists.put(1, new Exists("pom0.xml"));
         Host.actionTypeFileExists.put(2, new Exists("README.md"));
