@@ -35,6 +35,6 @@ public class HostIdTest {
 
     @Test(groups = { "HostId" })
     public void getTableName() {
-        AssertJUnit.assertTrue(actionStringCompareUpsert.getResultTableName().equals("test_table_name"));
+        AssertJUnit.assertTrue(actionStringCompareUpsert.getResultTableName().equals("table_name"));
     }
 }
