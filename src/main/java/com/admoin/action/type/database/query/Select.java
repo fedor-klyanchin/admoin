@@ -14,7 +14,7 @@ import tech.ydb.table.result.ResultSetReader;
 public class Select implements Serializable {
     private static final long serialVersionUID = 15L;
 
-    private static String tablePath = "action/type/database/query/select";
+    private static String tablePath = "action/type/database/query/database_query_select";
     private static String tableName = Type.getTableName(tablePath);
 
     private String resultTablePath;
@@ -57,8 +57,9 @@ public class Select implements Serializable {
     }
 
     public String start() {
-        String result;
+        String result = "";
         String columnNamehostId;
+        String columnNameValue = resultTableName + "_value";
 
         if (resultTableName.equals("host")) {
             columnNamehostId = "host_id";
@@ -70,10 +71,13 @@ public class Select implements Serializable {
                 + "FROM `" + resultTablePath + "` "
                 + "WHERE `" + columnNamehostId + "` == " + Host.properties.getProperty("id") + ";";
 
-        ResultSetReader resultQuery = Host.dataBaseReadWrite.getQuery(query);
-        resultQuery.next();
-        String columnNameValue = resultTableName + "_value";
-        result = resultQuery.getColumn(columnNameValue).getText();
+        try {
+            ResultSetReader resultQuery = Host.dataBaseReadWrite.getQuery(query);
+            //resultQuery.next();
+            result = DataBase.getColumnString(resultQuery, columnNameValue);
+        } catch (Exception e) {
+            Log.logger.warning(e.getMessage());
+        }
 
         return result;
     }

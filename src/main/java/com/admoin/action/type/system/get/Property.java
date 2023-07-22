@@ -14,7 +14,7 @@ import tech.ydb.table.result.ResultSetReader;
 public class Property implements Serializable {
     private static final long serialVersionUID = 17L;
 
-    private static String tablePath = "action/type/system/get/property";
+    private static String tablePath = "action/type/system/get/system_get_property";
     private static String tableName = Type.getTableName(tablePath);
 
     public String name;

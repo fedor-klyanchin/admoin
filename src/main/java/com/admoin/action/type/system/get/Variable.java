@@ -14,7 +14,7 @@ import tech.ydb.table.result.ResultSetReader;
 public class Variable implements Serializable {
     private static final long serialVersionUID = 14L;
 
-    private static String tablePath = "action/type/system/get/variable";
+    private static String tablePath = "action/type/system/get/system_get_variable";
     private static String tableName = Type.getTableName(tablePath);
 
     public String name;

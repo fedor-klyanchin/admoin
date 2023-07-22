@@ -15,7 +15,7 @@ import tech.ydb.table.result.ResultSetReader;
 public class Remove implements Serializable {
     private static final long serialVersionUID = 12L;
 
-    private static String tablePath = "action/type/file/remove";
+    private static String tablePath = "action/type/file/file_remove";
     private static String tableName = Type.getTableName(tablePath);
 
     public static String getTablePath() {

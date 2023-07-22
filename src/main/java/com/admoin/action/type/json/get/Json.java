@@ -20,7 +20,7 @@ import tech.ydb.table.result.ResultSetReader;
 public class Json implements Serializable {
     private static final long serialVersionUID = 17L;
 
-    private static String tablePath = "action/type/json/get/json";
+    private static String tablePath = "action/type/json/get/json_get_json";
     private static String tableName = Type.getTableName(tablePath);
 
     private String urlString;

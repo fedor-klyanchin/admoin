@@ -15,7 +15,7 @@ import tech.ydb.table.result.ResultSetReader;
 public class Hex implements Serializable {
     private static final long serialVersionUID = 19L;
 
-    private static String tablePath = "action/type/string/format/hex";
+    private static String tablePath = "action/type/string/format/string_format_hex";
     private static String tableName = Type.getTableName(tablePath);
 
     public String string;

@@ -18,7 +18,7 @@ import tech.ydb.table.result.ResultSetReader;
 public class Connection implements Serializable {
     private static final long serialVersionUID = 8L;
 
-    private static String tablePath = "action/type/net/test/connection";
+    private static String tablePath = "action/type/net/test/net_test_connection";
     private static String tableName = Type.getTableName(tablePath);
 
     private String address;

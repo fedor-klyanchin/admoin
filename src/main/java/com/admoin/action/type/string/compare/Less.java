@@ -14,7 +14,7 @@ import com.admoin.action.type.Type;
 import tech.ydb.table.result.ResultSetReader;
 
 public class Less extends Compare {
-    private static String tablePath = "action/type/string/compare/less";
+    private static String tablePath = "action/type/string/compare/string_compare_less";
 
     @Override
     public String getControlValue() {

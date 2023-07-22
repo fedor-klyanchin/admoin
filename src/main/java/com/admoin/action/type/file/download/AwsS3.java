@@ -25,7 +25,7 @@ import tech.ydb.table.result.ResultSetReader;
 public class AwsS3 implements Serializable {
     private static final long serialVersionUID = 9L;
 
-    private static String tablePath = "action/type/file/download/aws_s3";
+    private static String tablePath = "action/type/file/download/file_download_aws_s3";
     private static String tableName = Type.getTableName(tablePath);
 
     public String getBucketName() {

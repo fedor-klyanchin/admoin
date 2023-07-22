@@ -14,7 +14,7 @@ import tech.ydb.table.result.ResultSetReader;
 public class Field implements Serializable {
     private static final long serialVersionUID = 15L;
 
-    private static String tablePath = "action/type/app/get/field";
+    private static String tablePath = "action/type/app/get/app_get_field";
     private static String tableName = Type.getTableName(tablePath);
 
     public String fieldName;

@@ -11,7 +11,7 @@ import com.admoin.action.type.Type;
 import tech.ydb.table.result.ResultSetReader;
 
 public class Equals extends Compare {
-    private static String tablePath = "action/type/string/compare/equals";
+    private static String tablePath = "action/type/string/compare/string_compare_equals";
 
     @Override
     public String getControlValue() {

@@ -20,7 +20,7 @@ import tech.ydb.table.result.ResultSetReader;
 public class Text implements Serializable {
     private static final long serialVersionUID = 10L;
 
-    private static String tablePath = "action/type/url/get/text";
+    private static String tablePath = "action/type/url/get/url_get_text";
     private static String tableName = Type.getTableName(tablePath);
 
     public String urlString;

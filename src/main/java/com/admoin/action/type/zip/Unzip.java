@@ -23,7 +23,7 @@ import tech.ydb.table.result.ResultSetReader;
 public class Unzip implements Serializable {
     private static final long serialVersionUID = 12L;
 
-    private static String tablePath = "action/type/zip/unzip";
+    private static String tablePath = "action/type/zip/zip_unzip";
     private static String tableName = Type.getTableName(tablePath);
 
     public String getFilePath() {

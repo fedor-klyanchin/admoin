@@ -18,7 +18,7 @@ import tech.ydb.table.result.ResultSetReader;
 public class Start implements Serializable {
     private static final long serialVersionUID = 13L;
 
-    private static String tablePath = "action/type/file/start";
+    private static String tablePath = "action/type/file/file_start";
     private static String tableName = Type.getTableName(tablePath);
 
     public static ConcurrentMap<Integer, Start> getFromDataBase() {

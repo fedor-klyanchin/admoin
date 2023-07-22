@@ -15,7 +15,7 @@ import tech.ydb.table.result.ResultSetReader;
 public class Exists implements Serializable {
     private static final long serialVersionUID = 11L;
 
-    private static String tablePath = "action/type/file/exists";
+    private static String tablePath = "action/type/file/file_exists";
     private static String tableName = Type.getTableName(tablePath);
 
     private String path;

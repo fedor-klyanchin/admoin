@@ -25,7 +25,7 @@ import tech.ydb.table.result.ResultSetReader;
 public class PublicFile implements Serializable {
     private static final long serialVersionUID = 12L;
 
-    private static String tablePath = "action/type/file/download/public_file";
+    private static String tablePath = "action/type/file/download/file_download_public_file";
     private static String tableName = Type.getTableName(tablePath);
 
     private String localPath;

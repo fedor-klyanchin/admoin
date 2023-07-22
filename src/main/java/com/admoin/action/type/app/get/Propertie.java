@@ -13,7 +13,7 @@ import tech.ydb.table.result.ResultSetReader;
 
 public class Propertie implements Serializable {
     private static final long serialVersionUID = 16L;
-    private static String tablePath = "action/type/app/get/propertie";
+    private static String tablePath = "action/type/app/get/app_get_propertie";
     private static String tableName = Type.getTableName(tablePath);
 
     private String propertieName;

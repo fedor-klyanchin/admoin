@@ -15,7 +15,7 @@ import tech.ydb.table.result.ResultSetReader;
 public class Upsert implements Serializable {
     private static final long serialVersionUID = 15L;
 
-    private static String tablePath = "action/type/database/query/upsert";
+    private static String tablePath = "action/type/database/query/database_query_upsert";
     private static String tableName = Type.getTableName(tablePath);
 
     private String resultTablePath;
@@ -64,16 +64,26 @@ public class Upsert implements Serializable {
             !action.getResult().equals(action.getResultOld()) ||
             Boolean.TRUE.equals(!action.getSynchronizedWithDatabase())
             ) {
-            result = Host.dataBaseReadWrite.sendQuery(this.getQuery(action));
+
+            String query = this.getQuery(action);
+            result = Host.dataBaseReadWrite.sendQuery(query);
         }
         return result;
     }
 
     public String getQuery(Action action) {
+        String columnNamehostId;
+        
+        if (resultTableName.equals("host")) {
+            columnNamehostId = "host_id";
+        } else {
+            columnNamehostId = resultTableName + "_host_id";
+        }
+
         return DataBase.getQueryVariableDateTimeMoscow() +
                 "UPSERT INTO `" + this.resultTablePath + "` " +
                 "( `" +
-                resultTableName + "_host_id" + "`, `" +
+                columnNamehostId + "`, `" +
                 resultTableName + "_datetime" + "`, `" +
                 resultTableName + "_value"
                 + "` ) "
