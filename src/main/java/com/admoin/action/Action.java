@@ -31,10 +31,6 @@ public class Action implements Serializable {
         Log.logger.info("yandexDataBaseReadOnly.get(query)");
         ResultSetReader result = Host.dataBaseReadOnly.getQuery(query);
 
-        if (!result.next()) {
-            throw new RuntimeException("not found first_aired");
-        }
-
         Log.logger.info("new action");
         ConcurrentHashMap<Integer, Action> actionMap = new ConcurrentHashMap<>();
 
@@ -122,7 +118,7 @@ public class Action implements Serializable {
 
     public void start(String source, Host host) throws Exception {
         completed = false;
-        Type type = Host.typeMap.get(typeId);
+        Type type = Host.actionTypeMap.get(typeId);
         this.lastStart = LocalDateTime.now();
 
         switch (type.getName()) {// https://docs.oracle.com/javase/tutorial/java/nutsandbolts/switch.html

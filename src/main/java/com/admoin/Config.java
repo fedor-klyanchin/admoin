@@ -19,12 +19,8 @@ public class Config implements Serializable {
 
         Log.logger.info("yandexDataBaseReadOnly.get(query)");
         ResultSetReader result = Host.dataBaseReadOnly.getQuery(query);
-        if (!result.next()) {
-            throw new RuntimeException("not found first_aired");
-        } else {
-            map.clear();
-        }
 
+        map.clear();
         do {
             configName = result.getColumn("config_name").getText();
             configValue = result.getColumn("config_value").getText();
