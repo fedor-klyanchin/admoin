@@ -35,13 +35,13 @@ public class UpsertTest {
 
     @Test(groups = { "Upsert" })
     public void getTableName() {
-        AssertJUnit.assertTrue(actionStringCompareUpsert.getResultTableName().equals("test_table_name"));
+        AssertJUnit.assertTrue(actionStringCompareUpsert.getResultTableName().equals("table_name"));
     }
 
     @Test(groups = { "Upsert" })
     public void getQuery() {
         AssertJUnit.assertTrue(actionStringCompareUpsert
             .getQuery(action)
-            .contains("test_table_name"));
+            .contains("table_name"));
     }
 }
