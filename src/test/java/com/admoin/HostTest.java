@@ -21,6 +21,13 @@ public class HostTest {// configVersion = Host.properties.getProperty(App.getCon
         Log.create();
         Host.getProperties();
         host = new Host();
+
+        try {
+            host.storeToLocalFile(host, Host.properties.getProperty("host_out_path", "host.out"));
+        } catch (Exception e) {
+            Log.logger.warning(e.getMessage());
+        }
+        
         host.restoreFromLocalFile();
     }
 
@@ -31,14 +38,12 @@ public class HostTest {// configVersion = Host.properties.getProperty(App.getCon
 
     @Test(groups = { "Host" }, dependsOnMethods = { "hostNew" })
     public void hostRestoreFromLocalFile() {
-        host.restoreFromLocalFile();
         System.out.println("host.id: " + host.id);
         AssertJUnit.assertTrue(host.id != 0);
     }
 
     @Test(groups = { "Host" }, dependsOnMethods = { "hostRestoreFromLocalFile" })
     public void hostRestoreHostId() {
-        host.restoreFromLocalFile();
         host.id = Integer.parseInt(Host.properties.getProperty("id"));
         System.out.println("host.id: " + host.id);
         AssertJUnit.assertTrue(host.id != 0);
