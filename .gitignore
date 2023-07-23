@@ -29,6 +29,7 @@ replay_pid*
 # config
 service-account-*.json
 *.properties
+!PropertiesDefault.properties
 host.out
 logApp.log.lck
 src/test/java/com/admoin/action/type/file/Download/AwsS3Test.java
