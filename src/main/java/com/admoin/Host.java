@@ -46,6 +46,10 @@ public class Host implements Serializable {
     private static final long serialVersionUID = 2L;
     public String name;
     public int id;
+    public String getName() {
+        return name;
+    }
+
     public String appVersion = App.APP_VERSION;
     public String configVersion = Host.properties.getProperty(App.getConfigVersionPropertyName());
     public static Properties properties;
