@@ -20,6 +20,7 @@ public class PropertieTest {
         Log.create();
         Host.getProperties();
         actionAppGetPropertieMap.put(1, actionStringComparePropertie);
+        Host.setProperty(App.getAppVersionPropertyName(), App.getAppVersion());
     }
 
     @Test(groups = { "Propertie" })
