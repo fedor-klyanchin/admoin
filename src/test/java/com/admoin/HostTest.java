@@ -11,7 +11,8 @@ import com.admoin.action.Link;
 import com.admoin.action.type.Type;
 import com.admoin.action.type.file.Exists;
 
-public class HostTest {// configVersion = Host.properties.getProperty(App.getConfigVersionPropertyName());
+public class HostTest {// configVersion =
+                       // Host.properties.getProperty(App.getConfigVersionPropertyName());
     private Host host;
     private LocalDateTime localDateTimeTestStart = LocalDateTime.now();
 
@@ -155,47 +156,44 @@ public class HostTest {// configVersion = Host.properties.getProperty(App.getCon
         Host.actionTypeFileExists.put(3, new Exists("pom.xml"));
         Host.actionTypeFileExists.put(4, new Exists("README.md"));
         Host.actionTypeFileExists.put(5, new Exists("README.md"));
-        
+
         host.startActionMap();
     }
 
-    @Test(groups = { "HostStartMap" })
+    @Test(groups = { "HostStartMap" }, dependsOnMethods = { "beforeGroupHostStartMap" })
     public void startActionMapOneActionTrue() throws Exception {
         AssertJUnit.assertTrue(Host.actionMap.get(2).getResult().equals("true"));
     }
 
-    @Test(groups = { "HostStartMap" })
+    @Test(groups = { "HostStartMap" }, dependsOnMethods = { "beforeGroupHostStartMap" })
     public void startActionMapOneActionFalse() throws Exception {
         AssertJUnit.assertFalse(Host.actionMap.get(1).getResult().equals("true"));
     }
 
-    @Test(groups = { "HostStartMap" })
+    @Test(groups = { "HostStartMap" }, dependsOnMethods = { "beforeGroupHostStartMap" })
     public void startActionMapTwoAction() throws Exception {
         AssertJUnit.assertTrue(
-            Host.actionMap.get(1).getResult().equals("false") &&
-            Host.actionMap.get(2).getResult().equals("true")
-        );
+                Host.actionMap.get(1).getResult().equals("false") &&
+                        Host.actionMap.get(2).getResult().equals("true"));
     }
 
-    @Test(groups = { "HostStartMap" })
+    @Test(groups = { "HostStartMap" }, dependsOnMethods = { "beforeGroupHostStartMap" })
     public void startActionMapTreeActionTwoLevel() throws Exception {
         AssertJUnit.assertTrue(
-            Host.actionMap.get(1).getResult().equals("false") &&
-            Host.actionMap.get(1).getLastStart().isAfter(localDateTimeTestStart) &&
-            Host.actionMap.get(2).getResult().equals("true") &&
-            Host.actionMap.get(2).getLastStart().isAfter(localDateTimeTestStart) &&
-            Host.actionMap.get(3).getResult().equals("") &&
-            Host.actionMap.get(3).getLastStart().isBefore(Host.actionMap.get(1).getLastStart()) &&
-            Host.actionMap.get(4).getResult().equals("true") &&
-            Host.actionMap.get(4).getLastStart().isAfter(Host.actionMap.get(2).getLastStart())
-            );
+                Host.actionMap.get(1).getResult().equals("false") &&
+                        Host.actionMap.get(1).getLastStart().isAfter(localDateTimeTestStart) &&
+                        Host.actionMap.get(2).getResult().equals("true") &&
+                        Host.actionMap.get(2).getLastStart().isAfter(localDateTimeTestStart) &&
+                        Host.actionMap.get(3).getResult().equals("") &&
+                        Host.actionMap.get(3).getLastStart().isBefore(Host.actionMap.get(1).getLastStart()) &&
+                        Host.actionMap.get(4).getResult().equals("true") &&
+                        Host.actionMap.get(4).getLastStart().isAfter(Host.actionMap.get(2).getLastStart()));
     }
 
-    @Test(groups = { "HostStartMap" })
+    @Test(groups = { "HostStartMap" }, dependsOnMethods = { "beforeGroupHostStartMap" })
     public void startActionMapTreeActionTwoLevelUseFalseResult() throws Exception {
         AssertJUnit.assertTrue(
-            Host.actionMap.get(5).getResult().equals("true") &&
-            Host.actionMap.get(4).getLastStart().isAfter(Host.actionMap.get(1).getLastStart())
-            );
+                Host.actionMap.get(5).getResult().equals("true") &&
+                        Host.actionMap.get(4).getLastStart().isAfter(Host.actionMap.get(1).getLastStart()));
     }
 }
