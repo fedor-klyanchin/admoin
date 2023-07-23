@@ -155,26 +155,22 @@ public class HostTest {// configVersion = Host.properties.getProperty(App.getCon
         Host.actionTypeFileExists.put(3, new Exists("pom.xml"));
         Host.actionTypeFileExists.put(4, new Exists("README.md"));
         Host.actionTypeFileExists.put(5, new Exists("README.md"));
+        
+        host.startActionMap();
     }
 
     @Test(groups = { "HostStartMap" })
     public void startActionMapOneActionTrue() throws Exception {
-        host.startActionMap();
-
         AssertJUnit.assertTrue(Host.actionMap.get(2).getResult().equals("true"));
     }
 
     @Test(groups = { "HostStartMap" })
     public void startActionMapOneActionFalse() throws Exception {
-        host.startActionMap();
-
         AssertJUnit.assertFalse(Host.actionMap.get(1).getResult().equals("true"));
     }
 
     @Test(groups = { "HostStartMap" })
     public void startActionMapTwoAction() throws Exception {
-        host.startActionMap();
-
         AssertJUnit.assertTrue(
             Host.actionMap.get(1).getResult().equals("false") &&
             Host.actionMap.get(2).getResult().equals("true")
@@ -183,8 +179,6 @@ public class HostTest {// configVersion = Host.properties.getProperty(App.getCon
 
     @Test(groups = { "HostStartMap" })
     public void startActionMapTreeActionTwoLevel() throws Exception {
-        host.startActionMap();
-
         AssertJUnit.assertTrue(
             Host.actionMap.get(1).getResult().equals("false") &&
             Host.actionMap.get(1).getLastStart().isAfter(localDateTimeTestStart) &&
@@ -199,8 +193,6 @@ public class HostTest {// configVersion = Host.properties.getProperty(App.getCon
 
     @Test(groups = { "HostStartMap" })
     public void startActionMapTreeActionTwoLevelUseFalseResult() throws Exception {
-        host.startActionMap();
-
         AssertJUnit.assertTrue(
             Host.actionMap.get(5).getResult().equals("true") &&
             Host.actionMap.get(4).getLastStart().isAfter(Host.actionMap.get(1).getLastStart())
