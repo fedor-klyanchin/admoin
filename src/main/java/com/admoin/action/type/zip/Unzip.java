@@ -118,6 +118,10 @@ public class Unzip implements Serializable {
                         }
 
                         if (zipEntry.getSize() != 0) {
+                            if (!file.toPath().normalize().startsWith(zipFile.getParent())) {
+                                throw new Exception("Bad zip entry");
+                            }
+                            
                             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(
                                     new FileOutputStream(file.getAbsolutePath()));
                             byte[] bytesIn = new byte[BUFFER_SIZE];
