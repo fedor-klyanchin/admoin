@@ -379,6 +379,8 @@ public class Host implements Serializable {
                     try {
                         action.setResultOld(action.getResult());
                         action.start(link.getSource(), this);
+                        Log.logger.info("Action. Id: " + action.getId() + ", TypeId: " + action.getTypeId() + ", Result: " + action.getResult());
+                        
                         Host.actionMap.put(link.getToId(), action);
                     } catch (Exception e) {
                         Log.logger.warning(e.getMessage());
