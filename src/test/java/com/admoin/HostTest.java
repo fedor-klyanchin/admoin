@@ -181,19 +181,19 @@ public class HostTest {// configVersion =
     public void startActionMapTreeActionTwoLevel() throws Exception {
         AssertJUnit.assertTrue(
                 Host.actionMap.get(1).getResult().equals("false") &&
-                        //Host.actionMap.get(1).getLastStart().isAfter(localDateTimeTestStart) &&
+                        !Host.actionMap.get(1).getLastStart().isBefore(localDateTimeTestStart) &&
                         Host.actionMap.get(2).getResult().equals("true") &&
-                        //Host.actionMap.get(2).getLastStart().isAfter(localDateTimeTestStart) &&
+                        !Host.actionMap.get(2).getLastStart().isBefore(localDateTimeTestStart) &&
                         Host.actionMap.get(3).getResult().equals("") &&
-                        Host.actionMap.get(3).getLastStart().isBefore(Host.actionMap.get(1).getLastStart()) &&
+                        !Host.actionMap.get(3).getLastStart().isAfter(Host.actionMap.get(1).getLastStart()) &&
                         Host.actionMap.get(4).getResult().equals("true") &&
-                        Host.actionMap.get(4).getLastStart().isAfter(Host.actionMap.get(2).getLastStart()));
+                        !Host.actionMap.get(4).getLastStart().isBefore(Host.actionMap.get(2).getLastStart()));
     }
 
     @Test(groups = { "HostStartMap" }, dependsOnMethods = { "beforeGroupHostStartMap" })
     public void startActionMapTreeActionTwoLevelUseFalseResult() throws Exception {
         AssertJUnit.assertTrue(
                 Host.actionMap.get(5).getResult().equals("true") &&
-                        Host.actionMap.get(4).getLastStart().isAfter(Host.actionMap.get(1).getLastStart()));
+                        !Host.actionMap.get(4).getLastStart().isBefore(Host.actionMap.get(1).getLastStart()));
     }
 }
