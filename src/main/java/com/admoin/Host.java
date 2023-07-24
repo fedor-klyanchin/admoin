@@ -46,6 +46,7 @@ public class Host implements Serializable {
     private static final long serialVersionUID = 2L;
     public String name;
     public int id;
+
     public String getName() {
         return name;
     }
@@ -154,7 +155,7 @@ public class Host implements Serializable {
         Host.dataBaseReadWrite.getQuery(queryGetLastHost);
         ResultSetReader resultQuery = Host.dataBaseReadWrite.getQuery(queryGetLastHost);
 
-        do{
+        do {
             lastId = (int) resultQuery.getColumn("host_id").getUint64();
         } while (resultQuery.next());
 
@@ -187,7 +188,7 @@ public class Host implements Serializable {
             fieldValue = field.get(this).toString();
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
             Log.logger.warning(e.getMessage());
-        }   
+        }
         Log.logger.info("this.getPropertiesFieldValue. return: " + fieldValue);
         return fieldValue;
     }
@@ -379,8 +380,9 @@ public class Host implements Serializable {
                     try {
                         action.setResultOld(action.getResult());
                         action.start(link.getSource(), this);
-                        Log.logger.info("Action. Id: " + action.getId() + ", TypeId: " + action.getTypeId() + ", Result: " + action.getResult());
-                        
+                        Log.logger.info("Action. Id: " + action.getId() + ", TypeId: " + action.getTypeId()
+                                + ", Result: " + action.getResult() + ", LastStart: " + action.getLastStart());
+
                         Host.actionMap.put(link.getToId(), action);
                     } catch (Exception e) {
                         Log.logger.warning(e.getMessage());
