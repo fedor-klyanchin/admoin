@@ -9,8 +9,8 @@ import java.util.concurrent.ForkJoinPool;
 
 import com.admoin.action.type.net.test.Connection;
 
+import tech.ydb.auth.AuthProvider;
 import tech.ydb.auth.iam.CloudAuthHelper;
-import tech.ydb.core.auth.AuthProvider;
 import tech.ydb.core.grpc.GrpcTransport;
 import tech.ydb.table.SessionRetryContext;
 import tech.ydb.table.TableClient;
@@ -21,6 +21,7 @@ import tech.ydb.table.transaction.TxControl.TxSerializableRw;
 import tech.ydb.core.Result;
 
 public class DataBase {
+    private String connectionConfigFile;
     private String connectionString;
     private String saKeyFile;
     GrpcTransport transport;
@@ -35,6 +36,10 @@ public class DataBase {
 
     public String getSaKeyFile() {
         return saKeyFile;
+    }
+
+    public String getConnectionConfigFile() {
+        return connectionConfigFile;
     }
 
     public void setSaKeyFile(String saKeyFile) {
@@ -107,7 +112,7 @@ public class DataBase {
     }
 
     public void open() {
-        Log.logger.info("DataBase.open() " + getConnectionString() + ", " + getSaKeyFile());
+        Log.logger.info("DataBase.open() " + getConnectionConfigFile() + ", " + getSaKeyFile());
         AuthProvider authProvider = CloudAuthHelper.getServiceAccountFileAuthProvider(getSaKeyFile());
         transport = GrpcTransport.forConnectionString(getConnectionString())
                 .withSecureConnection()
