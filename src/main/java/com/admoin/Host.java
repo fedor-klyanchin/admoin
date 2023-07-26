@@ -349,12 +349,12 @@ public class Host implements Serializable {
     }
 
     public static void writeCurrentDateTimeToDataBaseTable(String tableName) {
-        String query = DataBase.getQueryVariableDateTimeMoscow() + "UPSERT INTO `" + tableName + "` "
+        String query = "UPSERT INTO `" + tableName + "` "
                 + "( `" +
                 tableName + "_host_id" + "`, `" +
                 tableName + "_datetime"
                 + "` ) "
-                + "VALUES (" + Host.properties.getProperty("id") + ",$currentDateTimeMoscow);";
+                + "VALUES (" + Host.properties.getProperty("id") + ", CurrentUtcDatetime());";
 
         Host.dataBaseReadWrite.sendQuery(query);
     }
