@@ -138,7 +138,7 @@ public class App {
         if (App.isGetDataFromDataBase()) {
             Host.getDataFromDataBase();
 
-            Host.storeProperties();
+            Host.storeProperties(Host.properties, Host.pathPropertiesCurrent);
             App.storeHostData(host);
         }
     }

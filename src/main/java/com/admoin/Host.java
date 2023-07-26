@@ -66,6 +66,7 @@ public class Host implements Serializable {
 
     static String pathPropertiesDefault = pathLocalFiles + "PropertiesDefault.properties";
     static String pathPropertiesCurrent = pathLocalFiles + "PropertiesCurrent.properties";
+    static String pathPropertiesId = pathLocalFiles + "PropertiesId.properties";
 
     String newKey;
     String newValue;
@@ -167,6 +168,8 @@ public class Host implements Serializable {
     }
 
     public void setId(int lastId) throws Exception {
+        Properties propertiesId = new Properties();
+
         id = ++lastId;
         Log.logger.info("host.setId(" + lastId + ")");
 
@@ -176,8 +179,10 @@ public class Host implements Serializable {
                 + "\");";
 
         Host.dataBaseReadWrite.sendQuery(query);
-        Host.setProperty("id", Integer.toString(id));
-        Host.storeProperties();
+
+        propertiesId.setProperty("id", Integer.toString(id));
+
+        Host.storeProperties(propertiesId, Host.pathPropertiesId);
     }
 
     public String getFieldValue(String fieldName) {
@@ -276,6 +281,7 @@ public class Host implements Serializable {
 
     public static Properties getProperties() throws Exception {
         Host.getProperties(Host.pathPropertiesDefault, Host.properties);
+        Host.getProperties(Host.pathPropertiesId, Host.properties);
         Host.getProperties(Host.pathPropertiesCurrent, Host.properties);
         return Host.properties;
     }
@@ -306,12 +312,12 @@ public class Host implements Serializable {
         Log.logger.info("Host.setProperty() End");
     }
 
-    public static void storeProperties() throws Exception {
-        File fileProperties = new File(Host.pathPropertiesCurrent);
+    public static void storeProperties(Properties properties, String path) throws Exception {
+        File fileProperties = new File(path);
         Log.logger.info("this.storeProperties(" + fileProperties + ", property)");
         try (
                 FileOutputStream outputStream = new FileOutputStream(fileProperties.getAbsolutePath());) {
-            Host.properties.store(outputStream, "---No Comment---");
+            properties.store(outputStream, "---No Comment---");
         } catch (Exception e) {
             Log.logger.warning(e.getMessage());
         }

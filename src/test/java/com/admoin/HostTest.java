@@ -78,7 +78,7 @@ public class HostTest {// configVersion =
     @Test(groups = { "Properties" }, dependsOnMethods = { "PropertiesGetNotEmpty" })
     public void PropertiesSetProperty() throws Exception {
         Host.properties.remove("test_set_property");
-        Host.storeProperties();
+        Host.storeProperties(Host.properties, Host.pathPropertiesCurrent);
         Host.setProperty("test_set_property", "test_set_property");
         AssertJUnit.assertTrue(Host.properties.getProperty("test_set_property").equals("test_set_property"));
     }
@@ -93,12 +93,12 @@ public class HostTest {// configVersion =
     @Test(groups = { "Properties" }, dependsOnMethods = { "PropertiesSetPropertyTestGetLocalSaveProperty" })
     public void storeProperties() throws Exception {
         Host.setProperty("test_set_property", "test_set_property");
-        Host.storeProperties();
+        Host.storeProperties(Host.properties, Host.pathPropertiesCurrent);
         Host.properties.clear();
         Host.getProperties();
         AssertJUnit.assertTrue(Host.properties.getProperty("test_set_property", "false").equals("test_set_property"));
         Host.properties.remove("test_set_property");
-        Host.storeProperties();
+        Host.storeProperties(Host.properties, Host.pathPropertiesCurrent);
     }
 
     @Test(groups = { "Host" })
