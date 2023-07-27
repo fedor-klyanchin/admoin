@@ -32,5 +32,4 @@ service-account-*.json
 !PropertiesDefault.properties
 host.out
 logApp.log.lck
-src/test/java/com/admoin/DataBaseTest.java
 config-*.json
