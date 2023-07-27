@@ -21,12 +21,33 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: create-json
-      id: create-json
+    - name: create-json-service-account-read-only-test
+      id: create-json-service-account-read-only-test
       uses: jsdaniell/create-json@v1.2.2
       with:
         name: "service-account-read-only-test.json"
         json: ${{ secrets.SERVICE_ACCOUNT_READ_ONLY_TEST }}
+        dir: '/'
+    - name: create-json-service-account-read-write-test
+      id: create-json-service-account-read-write-test
+      uses: jsdaniell/create-json@v1.2.2
+      with:
+        name: "service-account-read-write-test.json"
+        json: ${{ secrets.SERVICE_ACCOUNT_READ_WRITE_TEST }}
+        dir: '/'
+    - name: create-json-config-bucket-test
+      id: create-json-config-bucket-test
+      uses: jsdaniell/create-json@v1.2.2
+      with:
+        name: "config-bucket-test.json"
+        json: ${{ secrets.CONFIG_BUCKET_TEST }}
+        dir: '/'
+    - name: create-json-config-database-test
+      id: create-json-config-database-test
+      uses: jsdaniell/create-json@v1.2.2
+      with:
+        name: "config-database-test.json"
+        json: ${{ secrets.CONFIG_DATABASE_TEST }}
         dir: '/'
     - name: Set up JDK 20
       uses: actions/setup-java@v3
