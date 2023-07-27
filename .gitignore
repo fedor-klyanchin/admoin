@@ -32,6 +32,5 @@ service-account-*.json
 !PropertiesDefault.properties
 host.out
 logApp.log.lck
-src/test/java/com/admoin/action/type/file/Download/AwsS3Test.java
 src/test/java/com/admoin/DataBaseTest.java
 config-*.json
