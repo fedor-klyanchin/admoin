@@ -71,6 +71,27 @@
         <version>3.4.2</version>
         <type>maven-plugin</type>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java
+    <dependency>
+        <groupId>com.google.protobuf</groupId>
+        <artifactId>protobuf-java</artifactId>
+        <version>4.0.0-rc-2</version>
+    </dependency>-->
+
+    <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on 
+    <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcprov-jdk15on</artifactId>
+        <version>1.60</version>
+    </dependency>-->
+
+    <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+    <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>32.1.2-jre</version>
+    </dependency>
   </dependencies>
 
   <build>
