@@ -15,6 +15,7 @@ public class HostTest {// configVersion =
                        // Host.properties.getProperty(App.getConfigVersionPropertyName());
     private Host host;
     private LocalDateTime localDateTimeTestStart = LocalDateTime.now();
+    private LocalDateTime startActionMapSecond;
 
     @BeforeClass
     public void setUp() throws Exception {
@@ -131,10 +132,13 @@ public class HostTest {// configVersion =
         Host.actionMap.put(3, new Action(3, 1, 0));
         Host.actionMap.put(4, new Action(4, 1, 0));
         Host.actionMap.put(5, new Action(5, 1, 0));
+        Host.actionMap.put(6, new Action(6, 1, 60));
+        Host.actionMap.put(8, new Action(8, 1, 0));
 
         List<Link> linkList0 = new ArrayList<>();
         linkList0.add(new Link(0, 1, false));
         linkList0.add(new Link(0, 2, false));
+        linkList0.add(new Link(0, 6, false));
 
         List<Link> linkList1 = new ArrayList<>();
         linkList1.add(new Link(1, 3, false));
@@ -143,10 +147,14 @@ public class HostTest {// configVersion =
         List<Link> linkList2 = new ArrayList<>();
         linkList2.add(new Link(2, 4, false));
 
+        List<Link> linkList6 = new ArrayList<>();
+        linkList6.add(new Link(6, 8, false));
+
         Host.actionLinkMap.clear();
         Host.actionLinkMap.put(0, linkList0);
         Host.actionLinkMap.put(1, linkList1);
         Host.actionLinkMap.put(2, linkList2);
+        Host.actionLinkMap.put(6, linkList6);
 
         Host.actionTypeMap.clear();
         Host.actionTypeMap.put(1, new Type(1, "file.Exists", null));
@@ -156,7 +164,11 @@ public class HostTest {// configVersion =
         Host.actionTypeFileExists.put(3, new Exists("pom.xml"));
         Host.actionTypeFileExists.put(4, new Exists("README.md"));
         Host.actionTypeFileExists.put(5, new Exists("README.md"));
+        Host.actionTypeFileExists.put(6, new Exists("README.md"));
+        Host.actionTypeFileExists.put(8, new Exists("README.md"));
 
+        host.startActionMap();
+        startActionMapSecond = LocalDateTime.now();
         host.startActionMap();
     }
 
@@ -195,5 +207,15 @@ public class HostTest {// configVersion =
         AssertJUnit.assertTrue(
                 Host.actionMap.get(5).getResult().equals("true") &&
                         !Host.actionMap.get(4).getLastStart().isBefore(Host.actionMap.get(1).getLastStart()));
+    }
+
+    @Test(groups = { "HostStartMap" }, dependsOnMethods = { "beforeGroupHostStartMap" })
+    public void startActionTestStartIntervalSeconds() throws Exception {
+        LocalDateTime startActionFirst = Host.actionMap.get(6).getLastStart();
+        LocalDateTime startActionSecond = Host.actionMap.get(8).getLastStart();
+
+        AssertJUnit.assertTrue(
+            !startActionMapSecond.isBefore(startActionFirst) &&
+            !startActionMapSecond.isBefore(startActionSecond));
     }
 }
