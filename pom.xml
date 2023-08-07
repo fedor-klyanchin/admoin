@@ -6,7 +6,7 @@
 
   <groupId>com.admoin</groupId>
   <artifactId>admoin</artifactId>
-  <version>2.0.5</version>
+  <version>2.0.6</version>
 
   <name>admoin</name>
   <url>http://www.admoin.com</url>
@@ -14,8 +14,20 @@
   <properties>
     <maven.compiler.source>20</maven.compiler.source>
     <maven.compiler.target>20</maven.compiler.target>
-    <ydb.sdk.version>2.1.0</ydb.sdk.version>
   </properties>
+
+  <dependencyManagement>
+      <dependencies>
+          <!-- https://github.com/ydb-platform/ydb-java-sdk -->
+          <dependency>
+              <groupId>tech.ydb</groupId>
+              <artifactId>ydb-sdk-bom</artifactId>
+              <version>2.1.2</version>
+              <type>pom</type>
+              <scope>import</scope>
+          </dependency>
+      </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <!-- https://github.com/google/gson -->
@@ -34,29 +46,34 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- YDB Java SDK v2 -->
+    <!-- Scheme service client -->
     <dependency>
-      <groupId>tech.ydb</groupId>
-      <artifactId>ydb-sdk-core</artifactId>
-      <version>${ydb.sdk.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>tech.ydb</groupId>
-      <artifactId>ydb-sdk-table</artifactId>
-      <version>${ydb.sdk.version}</version>
+        <groupId>tech.ydb</groupId>
+        <artifactId>ydb-sdk-scheme</artifactId>
     </dependency>
 
-    <!-- If you want to use Yandex Cloud authentication provider -->
+    <!-- Table service client -->
     <dependency>
-      <groupId>tech.ydb.auth</groupId>
-      <artifactId>yc-auth-provider</artifactId>
-      <version>${ydb.sdk.version}</version>
+        <groupId>tech.ydb</groupId>
+        <artifactId>ydb-sdk-table</artifactId>
+    </dependency>
+
+    <!-- Topic service client -->
+    <dependency>
+        <groupId>tech.ydb</groupId>
+        <artifactId>ydb-sdk-topic</artifactId>
+    </dependency>
+
+    <!-- Coordination service client -->
+    <dependency>
+        <groupId>tech.ydb</groupId>
+        <artifactId>ydb-sdk-coordination</artifactId>
     </dependency>
 
     <dependency>
-    <groupId>com.yandex.cloud</groupId>
-    <artifactId>java-sdk-services</artifactId>
-    <version>2.6.3</version>
+      <groupId>com.yandex.cloud</groupId>
+      <artifactId>java-sdk-services</artifactId>
+      <version>2.6.3</version>
     </dependency>
 
     <dependency>
@@ -91,6 +108,12 @@
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>32.1.2-jre</version>
+    </dependency>
+  
+    <dependency>
+      <groupId>tech.ydb.auth</groupId>
+      <artifactId>yc-auth-provider</artifactId>
+      <version>2.1.0</version>
     </dependency>
   </dependencies>
 
