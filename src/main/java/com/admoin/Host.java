@@ -381,9 +381,9 @@ public class Host implements Serializable {
     public boolean isReady() {
         Boolean result = true;
         boolean isHostIdEqualsNull = this.isIdEqualsNull();
-        boolean isDataBaseReadWriteOpen = Host.dataBaseReadWrite.isOpen();
+        boolean isDataBaseReadWriteNotOpen = !Host.dataBaseReadWrite.isOpen();
 
-        if (isHostIdEqualsNull || !isDataBaseReadWriteOpen) {
+        if (isHostIdEqualsNull || isDataBaseReadWriteNotOpen) {
             result = false;
         }
 
