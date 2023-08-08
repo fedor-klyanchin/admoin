@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 import com.admoin.action.type.file.Start;
 
 public class App {
-    public static final String APP_VERSION = "2.0.7";
+    public static final String APP_VERSION = "2.0.8";
 
     static Map<String, String> config = new HashMap<>();
     static boolean oldVersionApp;
@@ -59,6 +59,7 @@ public class App {
         Log.create();
 
         Host.getProperties();
+        Host.storePropertiesDataBase();
 
         Log.create(Host.properties);
 
