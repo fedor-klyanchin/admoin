@@ -67,6 +67,7 @@ public class Host implements Serializable {
     static String pathPropertiesDefault = pathLocalFiles + "PropertiesDefault.properties";
     static String pathPropertiesCurrent = pathLocalFiles + "PropertiesCurrent.properties";
     static String pathPropertiesId = pathLocalFiles + "PropertiesId.properties";
+    static String pathPropertiesDataBase = pathLocalFiles + "PropertiesDataBase.properties";
 
     String newKey;
     String newValue;
@@ -281,9 +282,27 @@ public class Host implements Serializable {
 
     public static Properties getProperties() throws Exception {
         Host.getProperties(Host.pathPropertiesDefault, Host.properties);
-        Host.getProperties(Host.pathPropertiesId, Host.properties);
         Host.getProperties(Host.pathPropertiesCurrent, Host.properties);
+        Host.getProperties(Host.pathPropertiesDataBase, Host.properties);
+        Host.getProperties(Host.pathPropertiesId, Host.properties);
+
         return Host.properties;
+    }
+
+    static void storePropertiesDataBase() throws Exception {
+        File propertiesDataBaseFile = new File(Host.pathPropertiesDataBase);
+
+        if (!propertiesDataBaseFile.exists()) {
+            Properties propertiesDataBase = new Properties();
+
+            String connectionStringDataBaseReadOnly = Host.properties.getProperty("yandex_data_base_read_only_connection_string");
+            String connectionStringDataBaseReadWrite = Host.properties.getProperty("yandex_data_base_read_write_connection_string");
+
+            propertiesDataBase.setProperty("yandex_data_base_read_only_connection_string", connectionStringDataBaseReadOnly);
+            propertiesDataBase.setProperty("yandex_data_base_read_write_connection_string", connectionStringDataBaseReadWrite);
+
+            Host.storeProperties(propertiesDataBase, Host.pathPropertiesDataBase);
+        }
     }
 
     public static void getProperties(String pathFileProperties, Properties propertiesDefault) throws Exception {
