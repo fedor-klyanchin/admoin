@@ -13,29 +13,42 @@ import com.admoin.Host;
 import com.admoin.Log;
 
 public class LinkTest {
+    private ConcurrentMap<Integer, List<Link>> linkMap = new ConcurrentHashMap<>();
+    private List<Link> linkList0 = new ArrayList<>();
+    private List<Link> linkList1 = new ArrayList<>();
+
     @Test
     @BeforeClass
     public void setUp() throws Exception {
         Log.create();
         Host.getProperties();
+
+        Link link0 = new Link(0, 1, false);
+        Link link1 = new Link(1, 2, false);
+
+        linkList0.add(link0);
+        linkList1.add(link1);
+
+        linkMap.put(0, linkList0);
+        linkMap.put(1, linkList1);
     }
 
     @Test(groups = { "Link" })
     public void newAction() {
         Boolean result = false;
 
-        ConcurrentMap<Integer, List<Link>> linkMap = new ConcurrentHashMap<>();
-        Link link = new Link(1, 2, false);
-        List<Link> linkList = new ArrayList<>();
-        linkList.add(link);
-        linkMap.put(1, linkList);
-
-        for (Link linkItem : linkList) {
+        for (Link linkItem : linkList1) {
             if (linkItem.getFromId() == 1 && linkItem.getToId() == 2 && Boolean.FALSE.equals(linkItem.getFromFalseResult())) {
                 result = true;
             }
         }
 
         AssertJUnit.assertTrue(result);
+    }
+
+    @Test(groups = { "Link" })
+    public void linkMapWithoutIncorrectElement() {
+        int listLinkSize = linkMap.get(0).size();
+        AssertJUnit.assertTrue(listLinkSize == 1);
     }
 }
