@@ -221,7 +221,12 @@ public class Action implements Serializable {
     }
 
     public boolean isTimeToStart() {
-        return LocalDateTime.now().isAfter(lastStart.plusSeconds(startIntervalSeconds));
+        LocalDateTime localDateTimeNow = LocalDateTime.now();
+        LocalDateTime lastStartPlusStartIntervalSeconds = lastStart.plusSeconds(startIntervalSeconds);
+        Boolean isAfterLocalDateTimeNow = !localDateTimeNow.isBefore(lastStartPlusStartIntervalSeconds);
+        Boolean isAfterHostTimeToStart = !lastStart.isAfter(Host.timeToStart);
+
+        return isAfterLocalDateTimeNow && isAfterHostTimeToStart;
     }
 
     public boolean isCompleted() {

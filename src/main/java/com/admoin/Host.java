@@ -124,6 +124,7 @@ public class Host implements Serializable {
 
     ConcurrentMap<Integer, Action> actionDataBase = new ConcurrentHashMap<>();
     List<Link> linkDataBase = new ArrayList<>();
+    public static LocalDateTime timeToStart;
 
     public Host() {
         id = Integer.parseInt(Host.properties.getProperty("id"));
@@ -299,11 +300,15 @@ public class Host implements Serializable {
         if (!propertiesDataBaseFile.exists()) {
             Properties propertiesDataBase = new Properties();
 
-            String connectionStringDataBaseReadOnly = Host.properties.getProperty("yandex_data_base_read_only_connection_string");
-            String connectionStringDataBaseReadWrite = Host.properties.getProperty("yandex_data_base_read_write_connection_string");
+            String connectionStringDataBaseReadOnly = Host.properties
+                    .getProperty("yandex_data_base_read_only_connection_string");
+            String connectionStringDataBaseReadWrite = Host.properties
+                    .getProperty("yandex_data_base_read_write_connection_string");
 
-            propertiesDataBase.setProperty("yandex_data_base_read_only_connection_string", connectionStringDataBaseReadOnly);
-            propertiesDataBase.setProperty("yandex_data_base_read_write_connection_string", connectionStringDataBaseReadWrite);
+            propertiesDataBase.setProperty("yandex_data_base_read_only_connection_string",
+                    connectionStringDataBaseReadOnly);
+            propertiesDataBase.setProperty("yandex_data_base_read_write_connection_string",
+                    connectionStringDataBaseReadWrite);
 
             Host.storeProperties(propertiesDataBase, Host.pathPropertiesDataBase);
         }
@@ -374,7 +379,7 @@ public class Host implements Serializable {
         String query = "UPSERT INTO `" + tableName + "` "
                 + "( `" +
                 tableName + "_host_id" + "`, `" +
-                tableName + "_datetime"
+                tableName + "_value"
                 + "` ) "
                 + "VALUES (" + Host.properties.getProperty("id") + ", CurrentUtcDatetime());";
 
@@ -395,6 +400,8 @@ public class Host implements Serializable {
 
     public void startActionMap() {
         Log.logger.info("host.startAction()");
+        timeToStart = LocalDateTime.now();
+        Log.logger.info("Host.timeToStart: " + timeToStart);
 
         List<Link> linkCheck = Host.actionLinkMap.get(0);
         List<Link> linkCheckNew = new ArrayList<>();
@@ -403,6 +410,10 @@ public class Host implements Serializable {
             linkCheckNew.clear();
             linkCheck.parallelStream().forEach(link -> {
                 Action action = link.getActionFromMap();
+                Log.logger.info("Action [id=" + action.getId() + ", typeId=" + action.getTypeId()
+                        + ", startIntervalSeconds=" + action.getStartIntervalSeconds()
+                        + ", result=" + action.getResult() + ", resultOld=" + action.getResultOld() + ", lastStart="
+                        + action.getLastStart() + "]");
 
                 if (action.isTimeToStart()) {
                     try {
