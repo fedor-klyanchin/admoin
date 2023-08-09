@@ -147,19 +147,23 @@ public class Host implements Serializable {
 
     public int getNewIdFromDataBase() {
         Log.logger.info("this.getPropertiesNewIdFromDataBase()");
-        int lastId = 0;
+        int lastId;
 
         String queryGetLastHost = "SELECT `host_id` "
                 + "FROM `host` "
                 + "ORDER BY `host_id` DESC "
                 + "LIMIT 1;";
 
-        Host.dataBaseReadWrite.getQuery(queryGetLastHost);
-        ResultSetReader resultQuery = Host.dataBaseReadWrite.getQuery(queryGetLastHost);
+        try {
+            Host.dataBaseReadWrite.getQuery(queryGetLastHost);
+            ResultSetReader resultQuery = Host.dataBaseReadWrite.getQuery(queryGetLastHost);
 
-        do {
-            lastId = (int) resultQuery.getColumn("host_id").getUint64();
-        } while (resultQuery.next());
+            do {
+                lastId = (int) resultQuery.getColumn("host_id").getUint64();
+            } while (resultQuery.next());
+        } catch (Exception e) {
+            lastId = 0;
+        }
 
         return lastId;
     }
