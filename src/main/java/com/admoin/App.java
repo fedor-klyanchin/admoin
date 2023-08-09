@@ -75,11 +75,6 @@ public class App {
         oldVersionConfig = Host.isOldVersion(App.getConfigVersionPropertyName());
 
         if (Integer.parseInt(getPropertyHostId()) == (host.getId())) {
-            if (host.isGetNewId()) {
-                host.setId(host.getNewIdFromDataBase());
-                Host.getProperties();
-            }
-
             startMainRunLoop(host);
         } else {
             Log.logger
@@ -94,6 +89,11 @@ public class App {
             try {
                 if (Boolean.TRUE.equals(DataBase.isConnected())) {
                     DataBase.openAll();
+
+                    if (host.isGetNewId()) {
+                        host.setId(host.getNewIdFromDataBase());
+                        Host.getProperties();
+                    }
 
                     if (host.isReady()) {
                         host.onlineDateTime = LocalDateTime.now();
