@@ -77,7 +77,6 @@ public class Link implements Serializable {
 
         Log.logger.info("new Link[]");
         ConcurrentHashMap<Integer, List<Link>> linkMap = new ConcurrentHashMap<>();
-        List<Link> linkList = new ArrayList<>();
 
         do {
             int fromId = (int) result.getColumn("link_from_id").getUint64();
@@ -86,6 +85,7 @@ public class Link implements Serializable {
 
             Link link = new Link(fromId, toId, fromFalseResult);
 
+            List<Link> linkList = new ArrayList<>();
             if (linkMap.contains(fromId)) {
                 linkList = linkMap.get(fromId);
             }
