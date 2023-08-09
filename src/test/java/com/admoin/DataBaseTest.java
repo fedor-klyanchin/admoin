@@ -179,17 +179,17 @@ public class DataBaseTest {
     public void hostWriteCurrentDateTimeToDataBaseTable() throws Exception {
         LocalDateTime startlocalDateTime = LocalDateTime.now(ZoneOffset.UTC);
         App.sleep(1);
-        Host.writeCurrentDateTimeToDataBaseTable("online");
+        Host.writeCurrentDateTimeToDataBaseTable("online_datetime");
 
-        String query = "SELECT `" + "online" + "_datetime` "
-                + "FROM `" + "online" + "` "
-                + "WHERE `" + "online" + "_host_id` " + " == " + Host.properties.getProperty("id") + ";";
+        String query = "SELECT `" + "online_datetime" + "_value` "
+                + "FROM `" + "online_datetime" + "` "
+                + "WHERE `" + "online_datetime" + "_host_id` " + " == " + Host.properties.getProperty("id") + ";";
 
         ResultSetReader resultQuery = Host.dataBaseReadWrite.getQuery(query);
 
         LocalDateTime localDateTimeNowFromDataBase;
         do {
-            localDateTimeNowFromDataBase = resultQuery.getColumn("online_datetime").getDatetime();
+            localDateTimeNowFromDataBase = resultQuery.getColumn("online_datetime_value").getDatetime();
         } while (resultQuery.next());
 
         Boolean result = false;
