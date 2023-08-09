@@ -97,13 +97,13 @@ public class App {
 
                     if (host.isReady()) {
                         host.onlineDateTime = LocalDateTime.now();
-                        Host.writeCurrentDateTimeToDataBaseTable("online");
+                        Host.writeCurrentDateTimeToDataBaseTable("online_datetime");
 
                         startSync(host);
                         host.startActionMap();
 
                         host.syncDateTime = LocalDateTime.now();
-                        Host.writeCurrentDateTimeToDataBaseTable("sync_date");
+                        Host.writeCurrentDateTimeToDataBaseTable("sync_datetime");
                     }
                 } else {
                     Log.logger.warning("No connection to data base");
