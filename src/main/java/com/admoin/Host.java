@@ -330,7 +330,6 @@ public class Host implements Serializable {
 
     public static void setProperty(String newKey, String newValue) throws Exception {
         Log.logger.info("Host.setProperty(" + newKey + ", " + newValue + ")");
-        Host.getProperties(Host.pathPropertiesCurrent, Host.properties);
         Host.properties.setProperty(newKey, newValue);
         Log.logger.info("Host.setProperty() End");
     }
