@@ -23,6 +23,6 @@ public class TypeTest {
         Type type = new Type(1, "file.Exists", null);
         typeMap.put(1, type);
 
-        AssertJUnit.assertTrue(typeMap.get(1) == type && type.getId() == 1 && type.getName() == "file.Exists" && type.getTablePath() == "action/type/type");
+        AssertJUnit.assertTrue(typeMap.get(1) == type && type.getId() == 1 && type.getName() == "file.Exists" && type.getTablePath() == "action/type/action_type");
     }
 }

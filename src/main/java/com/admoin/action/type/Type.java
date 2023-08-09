@@ -16,7 +16,7 @@ public class Type implements Serializable {
     private int id;
     private String name;
     private String actionTablePath;
-    private static String tablePath = "action/type/type";
+    private static String tablePath = "action/type/action_type";
     private static String tableName = Type.getTableName(tablePath);
 
     public void setName(String name) {
