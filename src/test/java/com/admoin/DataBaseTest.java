@@ -128,10 +128,10 @@ public class DataBaseTest {
         linkMap = Link.getFromDataBase();
 
         List<Link> linkList = new ArrayList<>();
-        linkList = linkMap.get(1);
+        linkList = linkMap.get(2);
 
         for (Link linkItem : linkList) {
-            if (linkItem.getFromId() == 1 && linkItem.getToId() == 3
+            if (linkItem.getFromId() == 2 && linkItem.getToId() == 4
                     && Boolean.FALSE.equals(linkItem.getFromFalseResult())) {
                 result = true;
             }
