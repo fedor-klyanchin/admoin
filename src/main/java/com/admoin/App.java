@@ -180,7 +180,7 @@ public class App {
     }
 
     static boolean isGetDataFromDataBase() {
-        return App.updateConfig || oldVersionApp || oldVersionConfig;
+        return App.updateConfig || oldVersionApp || oldVersionConfig || Host.actionMap.size() == 0 || Host.actionLinkMap.size() == 0 || Host.actionTypeMap.size() == 0;
     }
 
     public static String testStart() {
