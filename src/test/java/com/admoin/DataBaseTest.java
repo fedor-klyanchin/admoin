@@ -266,10 +266,13 @@ public class DataBaseTest {
     @Test(groups = { "DataBase" })
     void testStartActionDataBaseUpsertTableHost() {
         String tablePath = "host";
-        Upsert actionUpsert = new Upsert(tablePath);
-        Action action = new Action(1, 1, 0);
+        Upsert actionUpsert = new Upsert(10,tablePath);
+
+        Action action = new Action(10, 1, 0);
         action.setResult(testValue);
-        actionUpsert.start(action);
+        Host.actionMap.put(10, action);
+
+        actionUpsert.start();
 
         Select actionSelect = new Select(tablePath);
         String result = actionSelect.start();
@@ -279,11 +282,14 @@ public class DataBaseTest {
     @Test(groups = { "DataBase" })
     void testStartActionDataBaseUpsertTableOther() {
         String tablePath = "test/test_test";
-        Upsert actionUpsert = new Upsert(tablePath);
-        Action action = new Action(1, 1, 0);
-        action.setResult(testValue);
-        actionUpsert.start(action);
+        Upsert actionUpsert = new Upsert(10,tablePath);
 
+        Action action = new Action(10, 1, 0);
+        action.setResult(testValue);
+        Host.actionMap.put(10, action);
+
+        actionUpsert.start();
+        
         Select actionSelect = new Select(tablePath);
         String result = actionSelect.start();
         AssertJUnit.assertTrue(result.equals(testValue));

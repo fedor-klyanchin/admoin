@@ -267,7 +267,7 @@ public class Action implements Serializable {
 
     private void startDataBaseQueryUpsert() {
         if (Host.actionTypeDatabaseQueryUpsert.containsKey(id)) {
-            this.setResult(Host.actionTypeDatabaseQueryUpsert.get(id).start(this));
+            this.setResult(Host.actionTypeDatabaseQueryUpsert.get(id).start());
             this.setSynchronizedWithDatabase(this.getResult().equals("false"));
         } else {
             this.setActionNotFound(true);

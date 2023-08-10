@@ -18,16 +18,34 @@ public class Upsert implements Serializable {
     private static String tablePath = "action/type/database/query/database_query_upsert";
     private static String tableName = Type.getTableName(tablePath);
 
+    private int actionIdResult;
     private String resultTablePath;
-
     private String resultTableName;
+    private String resultTargetAction;
+
+    public int getActionIdResult() {
+        return actionIdResult;
+    }
+
+    public void setActionIdResult(int actionIdResult) {
+        this.actionIdResult = actionIdResult;
+    }
+
+    public String getResultTargetAction() {
+        return resultTargetAction;
+    }
 
     public String getResultTableName() {
         return resultTableName;
     }
 
-    public Upsert(
+    public void setResultTargetAction(String resultTargetAction) {
+        this.resultTargetAction = resultTargetAction;
+    }
+
+    public Upsert(int actionIdResult, 
             String resultTablePath) {
+        this.actionIdResult = actionIdResult;
         this.resultTablePath = resultTablePath;
         this.resultTableName = Type.getTableName(resultTablePath);
     }
@@ -46,9 +64,10 @@ public class Upsert implements Serializable {
 
         do {
             int actionId = DataBase.getColumnInt(result, "?_action_id".replace("?", tableName));
+            int actionIdResult = DataBase.getColumnInt(result, "?_action_id_result".replace("?", tableName));
             String resultTablePath = DataBase.getColumnString(result, "?_table_path".replace("?", tableName));
 
-            Upsert action = new Upsert(resultTablePath);
+            Upsert action = new Upsert(actionIdResult, resultTablePath);
 
             actionMap.put(actionId, action);
 
@@ -58,20 +77,23 @@ public class Upsert implements Serializable {
         return actionMap;
     }
 
-    public String start(Action action) {
+    public String start() {
         String result = "false";
+        Action action = Host.actionMap.get(actionIdResult);
+        setResultTargetAction(action.getResult());
+
         if (
             !action.getResult().equals(action.getResultOld()) ||
             Boolean.TRUE.equals(!action.getSynchronizedWithDatabase())
             ) {
 
-            String query = this.getQuery(action);
+            String query = this.getQuery();
             result = Host.dataBaseReadWrite.sendQuery(query);
         }
         return result;
     }
 
-    public String getQuery(Action action) {
+    public String getQuery() {
         String columnNamehostId;
         
         if (resultTableName.equals("host")) {
@@ -80,13 +102,16 @@ public class Upsert implements Serializable {
             columnNamehostId = resultTableName + "_host_id";
         }
 
-        return DataBase.getQueryVariableDateTimeMoscow() +
-                "UPSERT INTO `" + this.resultTablePath + "` " +
+        return "UPSERT INTO `" + this.resultTablePath + "` " +
                 "( `" +
                 columnNamehostId + "`, `" +
                 resultTableName + "_datetime" + "`, `" +
                 resultTableName + "_value"
                 + "` ) "
-                + "VALUES (" + Host.properties.getProperty("id") + ",$currentDateTimeMoscow,'" + action.getResult() + "');";
+                + "VALUES (" + Host.properties.getProperty("id") + ",CurrentUtcDatetime(),'" + resultTargetAction + "');";
+    }
+
+    public String getResult(Action action) {
+        return action.getResult();
     }
 }
