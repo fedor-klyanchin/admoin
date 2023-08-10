@@ -61,7 +61,7 @@ public class Action implements Serializable {
         this.resultOld = resultOld;
     }
     private Boolean actionNotFound = false;
-    private Boolean synchronizedWithDatabase;
+    private Boolean synchronizedWithDatabase = false;
 
     private boolean completed;
 
@@ -268,7 +268,7 @@ public class Action implements Serializable {
     private void startDataBaseQueryUpsert() {
         if (Host.actionTypeDatabaseQueryUpsert.containsKey(id)) {
             this.setResult(Host.actionTypeDatabaseQueryUpsert.get(id).start());
-            this.setSynchronizedWithDatabase(this.getResult().equals("false"));
+            this.setSynchronizedWithDatabase(Boolean.parseBoolean(Host.actionMap.get(Host.actionTypeDatabaseQueryUpsert.get(id).getActionIdResult()).getResult()));
         } else {
             this.setActionNotFound(true);
         }
