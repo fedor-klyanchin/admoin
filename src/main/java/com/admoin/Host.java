@@ -403,7 +403,7 @@ public class Host implements Serializable {
         timeToStart = LocalDateTime.now();
         Log.logger.info("Host.timeToStart: " + timeToStart);
 
-        List<Link> linkCheck = Host.actionLinkMap.get(0);
+        List<Link> linkCheck = new ArrayList<>(Host.actionLinkMap.get(0));
         List<Link> linkCheckNew = new ArrayList<>();
 
         do {
