@@ -179,9 +179,9 @@ public class Host implements Serializable {
         id = ++lastId;
         Log.logger.info("host.setId(" + lastId + ")");
 
-        String query = DataBase.getQueryVariableDateTimeMoscow() + "UPSERT INTO `host` "
+        String query = "UPSERT INTO `host` "
                 + "( `host_id`, `host_datetime`, `host_value` ) "
-                + "VALUES (" + id + ",$currentDateTimeMoscow,\"" + hostName
+                + "VALUES (" + id + ",CurrentUtcDatetime(),\"" + hostName
                 + "\");";
 
         Host.dataBaseReadWrite.sendQuery(query);
