@@ -82,13 +82,15 @@ public class Upsert implements Serializable {
         Action action = Host.actionMap.get(actionIdResult);
         setResultTargetAction(action.getResult());
 
-        if (
-            !action.getResult().equals(action.getResultOld()) ||
-            Boolean.TRUE.equals(!action.getSynchronizedWithDatabase())
-            ) {
+        Boolean isChangeResult = !action.getResult().equals(action.getResultOld());
+        Boolean isNotSynchronizedWithDatabase = Boolean.TRUE.equals(!action.getSynchronizedWithDatabase());
+
+        if (isChangeResult || isNotSynchronizedWithDatabase) {
 
             String query = this.getQuery();
             result = Host.dataBaseReadWrite.sendQuery(query);
+        } else {
+            result = "true";
         }
         return result;
     }
