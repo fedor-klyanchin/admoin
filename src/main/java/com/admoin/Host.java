@@ -409,7 +409,7 @@ public class Host implements Serializable {
         do {
             linkCheckNew.clear();
             linkCheck.parallelStream().forEach(link -> {
-                Action action = link.getActionFromMap();
+                Action action = new Action(link.getActionFromMap());
                 Log.logger.info("Action [id=" + action.getId() + ", typeId=" + action.getTypeId()
                         + ", startIntervalSeconds=" + action.getStartIntervalSeconds()
                         + ", result=" + action.getResult() + ", resultOld=" + action.getResultOld() + ", lastStart="

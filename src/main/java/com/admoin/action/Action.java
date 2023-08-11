@@ -84,6 +84,15 @@ public class Action implements Serializable {
         this(id, typeId, startIntervalSeconds, "", LocalDateTime.now().minusSeconds(++startIntervalSeconds));
     }
 
+    public Action(Action action) {
+        this.id = action.id;
+        this.typeId = action.typeId;
+        this.startIntervalSeconds = action.startIntervalSeconds;
+        this.result = action.result;
+        this.lastStart = action.lastStart;
+        this.synchronizedWithDatabase = action.synchronizedWithDatabase;
+    }
+
     public Action(int id, int typeId, int startIntervalSeconds, String result, LocalDateTime lastStart) {
         this.id = id;
         this.typeId = typeId;
@@ -268,7 +277,7 @@ public class Action implements Serializable {
     private void startDataBaseQueryUpsert() {
         if (Host.actionTypeDatabaseQueryUpsert.containsKey(id)) {
             this.setResult(Host.actionTypeDatabaseQueryUpsert.get(id).start());
-            this.setSynchronizedWithDatabase(Boolean.parseBoolean(Host.actionMap.get(Host.actionTypeDatabaseQueryUpsert.get(id).getActionIdResult()).getResult()));
+            Host.actionMap.get(Host.actionTypeDatabaseQueryUpsert.get(id).getActionIdResult()).setSynchronizedWithDatabase(Boolean.parseBoolean(this.getResult()));
         } else {
             this.setActionNotFound(true);
         }
@@ -403,11 +412,11 @@ public class Action implements Serializable {
         }
     }
 
-    public Object getResultOld() {
-        return null;
-    }
-
     public static long getSerialversionuid() {
         return serialVersionUID;
+    }
+
+    public String getResultOld() {
+        return resultOld;
     }
 }
