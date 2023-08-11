@@ -194,7 +194,7 @@ public class DataBaseTest {
 
         Boolean result = false;
         if (!localDateTimeNowFromDataBase.isBefore(startlocalDateTime) &&
-                localDateTimeNowFromDataBase.isBefore(startlocalDateTime.plusMinutes(1))) {
+                localDateTimeNowFromDataBase.isBefore(startlocalDateTime.plusMinutes(5))) {
             result = true;
         }
 
