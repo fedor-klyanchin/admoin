@@ -28,7 +28,7 @@ import org.testng.AssertJUnit;
 public class DataBaseTest {
     private Host host;
     private String testValue = "TEST";
-    
+
     ConcurrentMap<Integer, Action> actionMap = new ConcurrentHashMap<>();
     ConcurrentMap<Integer, List<Link>> linkMap = new ConcurrentHashMap<>();
     ConcurrentMap<Integer, Type> typeMap = new ConcurrentHashMap<>();
@@ -45,16 +45,18 @@ public class DataBaseTest {
         DataBase.closeAll();
 
         Gson gson = new Gson();
-        Map<String, String> configDataBaseTest = new HashMap<>();     
+        Map<String, String> configDataBaseTest = new HashMap<>();
 
         JsonReader reader = new JsonReader(new FileReader("config-database-test.json"));
         configDataBaseTest = gson.fromJson(reader, configDataBaseTest.getClass());
 
-        Host.dataBaseReadOnly.setConnectionString(configDataBaseTest.get("yandex_data_base_read_only_connection_string"));
+        Host.dataBaseReadOnly
+                .setConnectionString(configDataBaseTest.get("yandex_data_base_read_only_connection_string"));
         Host.dataBaseReadOnly.setSaKeyFile(configDataBaseTest.get("yandex_data_base_read_only_sa_key_file"));
 
         Host.dataBaseReadWrite.close();
-        Host.dataBaseReadWrite.setConnectionString(configDataBaseTest.get("yandex_data_base_read_write_connection_string"));
+        Host.dataBaseReadWrite
+                .setConnectionString(configDataBaseTest.get("yandex_data_base_read_write_connection_string"));
         Host.dataBaseReadWrite.setSaKeyFile(configDataBaseTest.get("yandex_data_base_read_write_sa_key_file"));
 
         DataBase.openAll();
@@ -207,11 +209,12 @@ public class DataBaseTest {
         Boolean oldVersionConfig = App.isOldVersionConfig();
         Boolean updateConfig = App.isUpdateConfig();
         Boolean appIsGetDataFromDataBase = App.isGetDataFromDataBase();
+        Boolean appIsDatabaseConnectionStringChanged = App.isDatabaseConnectionStringChanged();
 
         AssertJUnit.assertTrue(
                 (oldVersionApp ||
                         oldVersionConfig ||
-                        updateConfig) == appIsGetDataFromDataBase);
+                        updateConfig || appIsDatabaseConnectionStringChanged) == appIsGetDataFromDataBase);
     }
 
     @Test(groups = { "DataBaseTest" })
@@ -266,7 +269,7 @@ public class DataBaseTest {
     @Test(groups = { "DataBase" })
     void testStartActionDataBaseUpsertTableHost() {
         String tablePath = "host";
-        Upsert actionUpsert = new Upsert(10,tablePath);
+        Upsert actionUpsert = new Upsert(10, tablePath);
 
         Action action = new Action(10, 1, 0);
         action.setResult(testValue);
@@ -282,14 +285,14 @@ public class DataBaseTest {
     @Test(groups = { "DataBase" })
     void testStartActionDataBaseUpsertTableOther() {
         String tablePath = "test/test_test";
-        Upsert actionUpsert = new Upsert(10,tablePath);
+        Upsert actionUpsert = new Upsert(10, tablePath);
 
         Action action = new Action(10, 1, 0);
         action.setResult(testValue);
         Host.actionMap.put(10, action);
 
         actionUpsert.start();
-        
+
         Select actionSelect = new Select(tablePath);
         String result = actionSelect.start();
         AssertJUnit.assertTrue(result.equals(testValue));

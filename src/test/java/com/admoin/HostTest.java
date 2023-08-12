@@ -218,4 +218,15 @@ public class HostTest {// configVersion =
             !startActionMapSecond.isBefore(startActionFirst) &&
             !startActionMapSecond.isBefore(startActionSecond));
     }
+
+    @Test
+    public void testRestoreFromLocalFile() throws Exception {
+        LocalDateTime localDateTimeNow = LocalDateTime.now();
+        host.onlineDateTime = localDateTimeNow;
+        host.storeToLocalFile(host, Host.properties.getProperty("host_out_path", "hostTest.out"));
+
+        Host hostRestore = Host.restoreFromLocalFile();
+
+        AssertJUnit.assertTrue(hostRestore.onlineDateTime.equals(localDateTimeNow));
+    }
 }

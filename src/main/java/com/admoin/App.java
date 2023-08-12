@@ -55,6 +55,8 @@ public class App {
 
     private static boolean updateConfig;
 
+    private static String dataBaseReadOnlyConnectionString;
+
     public static void main(String[] args) throws Exception {
         Log.create();
 
@@ -63,11 +65,10 @@ public class App {
 
         Log.create(Host.properties);
 
-        Host host = new Host();
+        dataBaseReadOnlyConnectionString = Host.properties.getProperty("yandex_data_base_read_only_connection_string");
 
-        if (getAppVersionFromProperty().equals(APP_VERSION)) {
-            host = host.restoreFromLocalFile();
-        }
+        Host host = Host.restoreFromLocalFile();
+        Host.getProperties();
 
         Host.setProperty(App.getAppVersionPropertyName(), APP_VERSION);
         App.storeHostData(host);
@@ -116,8 +117,6 @@ public class App {
                 App.exitApp = true;
                 DataBase.closeAll();
             }
-
-            App.storeHostData(host);
 
             App.isRetryExecution();
             if (Boolean.TRUE.equals(App.retryExecution)) {
@@ -180,12 +179,25 @@ public class App {
     }
 
     static boolean isGetDataFromDataBase() {
-        return App.updateConfig || oldVersionApp || oldVersionConfig || Host.actionMap.size() == 0 || Host.actionLinkMap.size() == 0 || Host.actionTypeMap.size() == 0;
+        return App.updateConfig || oldVersionApp || oldVersionConfig || Host.actionMap.size() == 0 || Host.actionLinkMap.size() == 0 || Host.actionTypeMap.size() == 0 ||
+        isDatabaseConnectionStringChanged();
+    }
+
+    static boolean isDatabaseConnectionStringChanged() {
+        return dataBaseReadOnlyConnectionString == null || !dataBaseReadOnlyConnectionString.equals(Host.properties.getProperty("yandex_data_base_read_only_connection_string",""));
     }
 
     public static String testStart() {
         Start actionAppStart = new Start("notepad.exe");
         return actionAppStart.start();
+    }
+
+    public static String getDataBaseReadOnlyConnectionString() {
+        return dataBaseReadOnlyConnectionString;
+    }
+
+    public static void setDataBaseReadOnlyConnectionString(String dataBaseReadOnlyConnectionString) {
+        App.dataBaseReadOnlyConnectionString = dataBaseReadOnlyConnectionString;
     }
 
     public static void restart() {

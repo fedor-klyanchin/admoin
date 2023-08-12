@@ -233,7 +233,7 @@ public class Host implements Serializable {
         }
     }
 
-    public Host restoreFromLocalFile() {
+    public static Host restoreFromLocalFile() {
         String outFilePath = Host.properties.getProperty("host_out_path", "host.out");
 
         Log.logger.info("this.readObject(%s)".replace("%s", outFilePath));

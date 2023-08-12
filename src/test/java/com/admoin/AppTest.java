@@ -16,7 +16,7 @@ public class AppTest {
     }
 
     @Test(groups = { "App" })
-    public void isRetryExecution() throws Exception {
+    public void testIsRetryExecution() throws Exception {
         AssertJUnit.assertTrue(
                 !App.isRetryExecution() ||
                         (App.isRetryExecution() &&
@@ -26,4 +26,19 @@ public class AppTest {
                                 !App.exitApp));
     }
 
+    @Test(groups = { "App" })
+    public void testTrueIsDatabaseConnectionStringChanged() throws Exception {
+        String dataBaseReadOnlyConnectionString = "1";
+        AssertJUnit.assertFalse(
+            !dataBaseReadOnlyConnectionString.equals(Host.properties.getProperty("yandex_data_base_read_only_connection_string_test","1"))
+        );
+    }
+
+    @Test(groups = { "App" })
+    public void testFalseIsDatabaseConnectionStringChanged() throws Exception {
+        String dataBaseReadOnlyConnectionString = "2";
+        AssertJUnit.assertTrue(
+            !dataBaseReadOnlyConnectionString.equals(Host.properties.getProperty("yandex_data_base_read_only_connection_string_test","1"))
+        );
+    }
 }
