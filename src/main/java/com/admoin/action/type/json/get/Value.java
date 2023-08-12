@@ -20,6 +20,8 @@ public class Value implements Serializable {
     private static String tablePath = "action/type/json/get/json_get_value";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, Value> map = new ConcurrentHashMap<>();
+
     public String name;
 
     public Value(
@@ -31,7 +33,7 @@ public class Value implements Serializable {
         return name;
     }
 
-    public static ConcurrentMap<Integer, Value> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionFileValue.getFromYandexDataBase()");
 
         Log.logger.info("new ActionFileValue[]");
@@ -50,7 +52,7 @@ public class Value implements Serializable {
             Log.logger.info("New actionAppGetValue [actionId=" + actionId + ", name=" + name + "]");
         } while (result.next());
 
-        return actionMap;
+        Value.map = actionMap;
     }
 
     public static JsonObject getJsonObject(String jsonString) {

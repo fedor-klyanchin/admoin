@@ -13,13 +13,36 @@ import com.admoin.App;
 import com.admoin.Host;
 import com.admoin.Log;
 import com.admoin.action.type.Type;
+import com.admoin.action.type.app.get.Field;
+import com.admoin.action.type.app.get.Propertie;
+import com.admoin.action.type.database.query.Select;
+import com.admoin.action.type.database.query.Upsert;
+import com.admoin.action.type.file.Exists;
+import com.admoin.action.type.file.Remove;
+import com.admoin.action.type.file.Start;
+import com.admoin.action.type.file.download.AwsS3;
+import com.admoin.action.type.file.download.PublicFile;
+import com.admoin.action.type.json.get.Json;
+import com.admoin.action.type.json.get.Value;
+import com.admoin.action.type.net.test.Connection;
+import com.admoin.action.type.string.compare.Contains;
+import com.admoin.action.type.string.compare.Equals;
+import com.admoin.action.type.string.compare.Less;
+import com.admoin.action.type.string.compare.LessVersion;
+import com.admoin.action.type.string.format.Hex;
+import com.admoin.action.type.system.get.Property;
+import com.admoin.action.type.system.get.Variable;
+import com.admoin.action.type.url.get.Text;
+import com.admoin.action.type.zip.Unzip;
 
 import tech.ydb.table.result.ResultSetReader;
 
 public class Action implements Serializable {
     private static final long serialVersionUID = 7L;
 
-    public static ConcurrentMap<Integer, Action> getFromDataBase() {
+    public static ConcurrentMap<Integer, Action> map = new ConcurrentHashMap<>();
+
+    public static void getFromDataBase() {
         Log.logger.info("Action.getFromYandexDataBase()");
 
         String query = "SELECT"
@@ -47,8 +70,9 @@ public class Action implements Serializable {
                     + " startIntervalSeconds: " + startIntervalSeconds);
         } while (result.next());
 
-        return actionMap;
+        Action.map = actionMap;
     }
+
     private int id;
     private int typeId;
     private int startIntervalSeconds;
@@ -127,7 +151,7 @@ public class Action implements Serializable {
 
     public void start(String source, Host host) throws Exception {
         completed = false;
-        Type type = Host.actionTypeMap.get(typeId);
+        Type type = Type.map.get(typeId);
         this.lastStart = LocalDateTime.now();
 
         switch (type.getName()) {// https://docs.oracle.com/javase/tutorial/java/nutsandbolts/switch.html
@@ -243,49 +267,49 @@ public class Action implements Serializable {
     }
 
     private void startFileExists(String source) {
-        if (Host.actionTypeFileExists.containsKey(id)) {
-            this.setResult(Host.actionTypeFileExists.get(id).start(source));
+        if (Exists.map.containsKey(id)) {
+            this.setResult(Exists.map.get(id).start(source));
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startFileRemove(String source) {
-        if (Host.actionTypeFileRemove.containsKey(id)) {
-            this.setResult(Host.actionTypeFileRemove.get(id).start(source));
+        if (Remove.map.containsKey(id)) {
+            this.setResult(Remove.map.get(id).start(source));
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startFileStart(String source) {
-        if (Host.actionTypeFileStart.containsKey(id)) {
-            this.setResult(Host.actionTypeFileStart.get(id).start(source));
+        if (Start.map.containsKey(id)) {
+            this.setResult(Start.map.get(id).start(source));
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startZipUnzip(String source) {
-        if (Host.actionTypeZipUnzip.containsKey(id)) {
-            this.setResult(Host.actionTypeZipUnzip.get(id).start(source));
+        if (Unzip.map.containsKey(id)) {
+            this.setResult(Unzip.map.get(id).start(source));
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startDataBaseQueryUpsert() {
-        if (Host.actionTypeDatabaseQueryUpsert.containsKey(id)) {
-            this.setResult(Host.actionTypeDatabaseQueryUpsert.get(id).start());
-            Host.actionMap.get(Host.actionTypeDatabaseQueryUpsert.get(id).getActionIdResult()).setSynchronizedWithDatabase(Boolean.parseBoolean(this.getResult()));
+        if (Upsert.map.containsKey(id)) {
+            this.setResult(Upsert.map.get(id).start());
+            Action.map.get(Upsert.map.get(id).getActionIdResult()).setSynchronizedWithDatabase(Boolean.parseBoolean(this.getResult()));
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startDatabaseQuerySelect() {
-        if (Host.actionTypeDatabaseQuerySelect.containsKey(id)) {
-            this.setResult(Host.actionTypeDatabaseQuerySelect.get(id).start());
+        if (Select.map.containsKey(id)) {
+            this.setResult(Select.map.get(id).start());
             this.setSynchronizedWithDatabase(this.getResult().equals("false"));
         } else {
             this.setActionNotFound(true);
@@ -293,120 +317,120 @@ public class Action implements Serializable {
     }
 
     private void startUrlGetText(String source) throws Exception {
-        if (Host.actionTypeUrlGetText.containsKey(id)) {
-            this.setResult(Host.actionTypeUrlGetText.get(id).start(source));
+        if (Text.map.containsKey(id)) {
+            this.setResult(Text.map.get(id).start(source));
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startSystemGetVariable() {
-        if (Host.actionTypeSystemgetVariable.containsKey(id)) {
-            this.setResult(Host.actionTypeSystemgetVariable.get(id).start());
+        if (Variable.map.containsKey(id)) {
+            this.setResult(Variable.map.get(id).start());
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startSystemGetProperty() {
-        if (Host.actionTypeSystemgetProperty.containsKey(id)) {
-            this.setResult(Host.actionTypeSystemgetProperty.get(id).start());
+        if (Property.map.containsKey(id)) {
+            this.setResult(Property.map.get(id).start());
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startStringFormatHex(String source) {
-        if (Host.actionTypeStringFormatHex.containsKey(id)) {
-            this.setResult(Host.actionTypeStringFormatHex.get(id).start(source));
+        if (Hex.map.containsKey(id)) {
+            this.setResult(Hex.map.get(id).start(source));
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startFileDownloadPublicFile(String source) {
-        if (Host.actionTypeFileDownloadPublicFile.containsKey(id)) {
-            this.setResult(Host.actionTypeFileDownloadPublicFile.get(id).start(source));
+        if (PublicFile.map.containsKey(id)) {
+            this.setResult(PublicFile.map.get(id).start(source));
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startJsonGetJson() throws MalformedURLException, URISyntaxException {
-        if (Host.actionTypeJsonGetJson.containsKey(id)) {
-            this.setResult(Host.actionTypeJsonGetJson.get(id).start());
+        if (Json.map.containsKey(id)) {
+            this.setResult(Json.map.get(id).start());
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startJsonGetValue(String source) {
-        if (Host.actionTypeJsonGetValue.containsKey(id)) {
-            this.setResult(Host.actionTypeJsonGetValue.get(id).start(source));
+        if (Value.map.containsKey(id)) {
+            this.setResult(Value.map.get(id).start(source));
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startNetTestConnection() throws UnknownHostException {
-        if (Host.actionTypeNetTestConnection.containsKey(id)) {
-            this.setResult(Host.actionTypeNetTestConnection.get(id).start());
+        if (Connection.map.containsKey(id)) {
+            this.setResult(Connection.map.get(id).start());
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startFileDownloadAwsS3(String source) throws IOException {
-        if (Host.actionTypeFileDownloadAwsS3.containsKey(id)) {
-            this.setResult(Host.actionTypeFileDownloadAwsS3.get(id).start(source));
+        if (AwsS3.map.containsKey(id)) {
+            this.setResult(AwsS3.map.get(id).start(source));
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startStringCompareLessVersion(String source) {
-        if (Host.actionTypeStringCompareLessVersion.containsKey(id)) {
-            this.setResult(Host.actionTypeStringCompareLessVersion.get(id).start(source));
+        if (LessVersion.map.containsKey(id)) {
+            this.setResult(LessVersion.map.get(id).start(source));
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startStringCompareLess(String source) {
-        if (Host.actionTypeStringCompareLess.containsKey(id)) {
-            this.setResult(Host.actionTypeStringCompareLess.get(id).start(source));
+        if (Less.map.containsKey(id)) {
+            this.setResult(Less.map.get(id).start(source));
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startStringCompareEquals(String source) {
-        if (Host.actionTypeStringCompareEquals.containsKey(id)) {
-            this.setResult(Host.actionTypeStringCompareEquals.get(id).start(source));
+        if (Equals.map.containsKey(id)) {
+            this.setResult(Equals.map.get(id).start(source));
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startStringCompareContains(String source) {
-        if (Host.actionTypeStringCompareContains.containsKey(id)) {
-            this.setResult(Host.actionTypeStringCompareContains.get(id).start(source));
+        if (Contains.map.containsKey(id)) {
+            this.setResult(Contains.map.get(id).start(source));
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startAppGetPropertie() {
-        if (Host.actionTypeAppGetPropertie.containsKey(id)) {
-            this.setResult(Host.actionTypeAppGetPropertie.get(id).start());
+        if (Propertie.map.containsKey(id)) {
+            this.setResult(Propertie.map.get(id).start());
         } else {
             this.setActionNotFound(true);
         }
     }
 
     private void startAppGetField(Host host) {
-        if (Host.actionTypeAppGetField.containsKey(id)) {
-            this.setResult(Host.actionTypeAppGetField.get(id).start(host));
+        if (Field.map.containsKey(id)) {
+            this.setResult(Field.map.get(id).start(host));
         } else {
             this.setActionNotFound(true);
         }

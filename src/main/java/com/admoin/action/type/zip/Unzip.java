@@ -26,6 +26,8 @@ public class Unzip implements Serializable {
     private static String tablePath = "action/type/zip/zip_unzip";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, Unzip> map = new ConcurrentHashMap<>();
+
     public String getFilePath() {
         return filePath;
     }
@@ -44,7 +46,7 @@ public class Unzip implements Serializable {
         this.destinationDirectory = destinationDirectory;
     }
 
-    public static ConcurrentMap<Integer, Unzip> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionFileDownload.getFromYandexDataBase()");
 
         Log.logger.info("new ActionFileDownload[]");
@@ -64,7 +66,7 @@ public class Unzip implements Serializable {
             Log.logger.info("New actionAppGetDownload [actionId=" + actionId + ", filePath=" + filePath + ", destinationDirectory=" + destinationDirectory + "]");
         } while (result.next());
 
-        return actionMap;
+        Unzip.map = actionMap;
     }
 
     public String start(String source) {

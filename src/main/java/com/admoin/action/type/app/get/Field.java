@@ -17,6 +17,8 @@ public class Field implements Serializable {
     private static String tablePath = "action/type/app/get/app_get_field";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, Field> map = new ConcurrentHashMap<>();
+
     public String fieldName;
 
     public String getFieldName() {
@@ -28,7 +30,7 @@ public class Field implements Serializable {
         this.fieldName = fieldName;
     }
 
-    public static ConcurrentMap<Integer, Field> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionAppGetField.getFromYandexDataBase()");
 
         Log.logger.info("new ActionAppGetField[]");
@@ -47,7 +49,7 @@ public class Field implements Serializable {
             Log.logger.info("New action [actionId=" + actionId + ", fieldName=" + fieldName + "]");
         } while (result.next());
 
-        return actionMap;
+        Field.map = actionMap;
     }
 
     public String start(Host host) {

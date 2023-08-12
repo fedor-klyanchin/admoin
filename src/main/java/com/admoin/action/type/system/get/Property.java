@@ -17,6 +17,8 @@ public class Property implements Serializable {
     private static String tablePath = "action/type/system/get/system_get_property";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, Property> map = new ConcurrentHashMap<>();
+
     public String name;
 
     public Property(
@@ -28,7 +30,7 @@ public class Property implements Serializable {
         return name;
     }
 
-    public static ConcurrentMap<Integer, Property> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionFileProperty.getFromYandexDataBase()");
 
         Log.logger.info("new ActionFileProperty[]");
@@ -47,7 +49,7 @@ public class Property implements Serializable {
             Log.logger.info("New action [actionId=" + actionId + ", name=" + name + "]");
         } while (result.next());
         
-        return actionMap;
+        Property.map = actionMap;
     }
 
     public String start() {

@@ -28,6 +28,8 @@ public class PublicFile implements Serializable {
     private static String tablePath = "action/type/file/download/file_download_public_file";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, PublicFile> map = new ConcurrentHashMap<>();
+
     private String localPath;
     private String remotePath;
 
@@ -38,7 +40,7 @@ public class PublicFile implements Serializable {
         this.remotePath = remotePath;
     }
 
-    public static ConcurrentMap<Integer, PublicFile> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionFileDownload.getFromYandexDataBase()");
 
         Log.logger.info("new ActionFileDownload[]");
@@ -57,7 +59,7 @@ public class PublicFile implements Serializable {
 
             Log.logger.info("New actionAppGetDownload [actionId=" + actionId + ", localPath=" + localPath + ", remotePath=" + remotePath + "]");
         } while (result.next());
-        return actionMap;
+        PublicFile.map = actionMap;
     }
 
     public String getLocalPath() {

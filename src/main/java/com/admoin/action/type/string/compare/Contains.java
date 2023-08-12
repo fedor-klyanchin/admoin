@@ -12,6 +12,7 @@ import tech.ydb.table.result.ResultSetReader;
 
 public class Contains extends Compare {
     private static String tablePath = "action/type/string/compare/string_compare_contains";
+    public static ConcurrentMap<Integer, Contains> map = new ConcurrentHashMap<>();
 
     @Override
     public String getControlValue() {
@@ -27,7 +28,7 @@ public class Contains extends Compare {
         result = currentValue.contains(controlValue);
     }
 
-    public static ConcurrentMap<Integer, Contains> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionStringCompareContains.getFromYandexDataBase()");
 
         Log.logger.info("new ActionStringCompareContains[]");
@@ -46,6 +47,6 @@ public class Contains extends Compare {
             Log.logger.info("New actionStringCompareContains [actionId=" + actionId + ", controlValue=" + controlValue + "]");
         } while (result.next());
 
-        return actionMap;
+        Contains.map = actionMap;
     }
 }

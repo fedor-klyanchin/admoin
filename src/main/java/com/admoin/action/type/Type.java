@@ -19,6 +19,8 @@ public class Type implements Serializable {
     private static String tablePath = "action/type/action_type";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, Type> map = new ConcurrentHashMap<>();
+
     public void setName(String name) {
         this.name = name;
     }
@@ -56,7 +58,7 @@ public class Type implements Serializable {
         return tablePath.substring(tablePath.lastIndexOf("/") + 1);
     }
 
-    public static ConcurrentMap<Integer, Type> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("Type.getFromYandexDataBase()");
 
         String query = "SELECT"
@@ -81,6 +83,6 @@ public class Type implements Serializable {
             Log.logger.info("New Type. id: " + id + " name: " + name + " actionTablePath: " + actionTablePath);
         } while (result.next());
 
-        return typeMap;
+        Type.map = typeMap;
     }
 }

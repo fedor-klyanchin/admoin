@@ -21,6 +21,8 @@ public class Connection implements Serializable {
     private static String tablePath = "action/type/net/test/net_test_connection";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, Connection> map = new ConcurrentHashMap<>();
+
     private String address;
     private int port;
 
@@ -31,7 +33,7 @@ public class Connection implements Serializable {
         this.port = port;
     }
 
-    public static ConcurrentMap<Integer, Connection> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionFileDownload.getFromYandexDataBase()");
 
         Log.logger.info("new ActionFileDownload[]");
@@ -51,7 +53,7 @@ public class Connection implements Serializable {
             Log.logger.info("New action [actionId=" + actionId + ", address=" + address + ", port=" + port + "]");
         } while (result.next());
 
-        return actionMap;
+        Connection.map = actionMap;
     }
 
     public String getAddress() {

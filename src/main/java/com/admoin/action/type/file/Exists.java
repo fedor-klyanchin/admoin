@@ -18,6 +18,8 @@ public class Exists implements Serializable {
     private static String tablePath = "action/type/file/file_exists";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, Exists> map = new ConcurrentHashMap<>();
+
     private String path;
 
     public Exists(String path) {
@@ -28,7 +30,7 @@ public class Exists implements Serializable {
         return path;
     }
 
-    public static ConcurrentMap<Integer, Exists> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionFileExists.getFromYandexDataBase()");
 
         Log.logger.info("new ActionFileExists[]");
@@ -47,7 +49,7 @@ public class Exists implements Serializable {
             Log.logger.info("New action [actionId=" + actionId + ", path=" + path + "]");
         } while (result.next());
 
-        return actionMap;
+        Exists.map = actionMap;
     }
 
     public String start() {

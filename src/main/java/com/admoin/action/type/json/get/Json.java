@@ -23,6 +23,8 @@ public class Json implements Serializable {
     private static String tablePath = "action/type/json/get/json_get_json";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, Json> map = new ConcurrentHashMap<>();
+
     private String urlString;
 
     public Json(
@@ -30,7 +32,7 @@ public class Json implements Serializable {
         this.urlString = urlString;
     }
 
-    public static ConcurrentMap<Integer, Json> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionFileJson.getFromYandexDataBase()");
 
         Log.logger.info("new ActionFileJson[]");
@@ -49,7 +51,7 @@ public class Json implements Serializable {
             Log.logger.info("New actionAppGetJson [actionId=" + actionId + ", url=" + urlString + "]");
         } while (result.next());
 
-        return actionMap;
+        Json.map = actionMap;
     }
 
     public String getUrlString() {

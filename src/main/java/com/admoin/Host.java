@@ -72,18 +72,6 @@ public class Host implements Serializable {
     String newKey;
     String newValue;
 
-    public static ConcurrentMap<Integer, Action> getActionMap() {
-        return actionMap;
-    }
-
-    public static ConcurrentMap<Integer, List<Link>> getActionLinkMap() {
-        return actionLinkMap;
-    }
-
-    public static ConcurrentMap<Integer, Type> getActionTypeMap() {
-        return actionTypeMap;
-    }
-
     // SystemPropertyes
     public String userName = System.getProperty("user.name");
     public String userHome = System.getProperty("user.home");
@@ -94,33 +82,33 @@ public class Host implements Serializable {
 
     public LocalDateTime onlineDateTime;
     public LocalDateTime syncDateTime;
-    public static Map<String, String> config = new HashMap<>();
+    public Map<String, String> config = new HashMap<>();
 
-    public static ConcurrentMap<Integer, Action> actionMap = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, List<Link>> actionLinkMap = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Type> actionTypeMap = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Action> actionMap = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, List<Link>> actionLinkMap = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Type> actionTypeMap = new ConcurrentHashMap<>();
 
-    public static ConcurrentMap<Integer, com.admoin.action.type.app.get.Field> actionTypeAppGetField = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Propertie> actionTypeAppGetPropertie = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Upsert> actionTypeDatabaseQueryUpsert = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Select> actionTypeDatabaseQuerySelect = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, AwsS3> actionTypeFileDownloadAwsS3 = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, PublicFile> actionTypeFileDownloadPublicFile = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Exists> actionTypeFileExists = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Remove> actionTypeFileRemove = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Start> actionTypeFileStart = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Json> actionTypeJsonGetJson = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Value> actionTypeJsonGetValue = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Connection> actionTypeNetTestConnection = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Contains> actionTypeStringCompareContains = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Equals> actionTypeStringCompareEquals = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Less> actionTypeStringCompareLess = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, LessVersion> actionTypeStringCompareLessVersion = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Hex> actionTypeStringFormatHex = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Property> actionTypeSystemgetProperty = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Variable> actionTypeSystemgetVariable = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Text> actionTypeUrlGetText = new ConcurrentHashMap<>();
-    public static ConcurrentMap<Integer, Unzip> actionTypeZipUnzip = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, com.admoin.action.type.app.get.Field> actionTypeAppGetField = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Propertie> actionTypeAppGetPropertie = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Upsert> actionTypeDatabaseQueryUpsert = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Select> actionTypeDatabaseQuerySelect = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, AwsS3> actionTypeFileDownloadAwsS3 = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, PublicFile> actionTypeFileDownloadPublicFile = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Exists> actionTypeFileExists = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Remove> actionTypeFileRemove = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Start> actionTypeFileStart = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Json> actionTypeJsonGetJson = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Value> actionTypeJsonGetValue = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Connection> actionTypeNetTestConnection = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Contains> actionTypeStringCompareContains = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Equals> actionTypeStringCompareEquals = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Less> actionTypeStringCompareLess = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, LessVersion> actionTypeStringCompareLessVersion = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Hex> actionTypeStringFormatHex = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Property> actionTypeSystemgetProperty = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Variable> actionTypeSystemgetVariable = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Text> actionTypeUrlGetText = new ConcurrentHashMap<>();
+    public ConcurrentMap<Integer, Unzip> actionTypeZipUnzip = new ConcurrentHashMap<>();
 
     ConcurrentMap<Integer, Action> actionDataBase = new ConcurrentHashMap<>();
     List<Link> linkDataBase = new ArrayList<>();
@@ -204,13 +192,13 @@ public class Host implements Serializable {
         return fieldValue;
     }
 
-    public static boolean isOldVersion(String versionName) {
+    public boolean isOldVersion(String versionName) {
         boolean oldVersion = false;
         String configVersion = null;
         String hostVersion = null;
 
-        if (Host.config != null) {
-            configVersion = Host.config.get(versionName);
+        if (getConfig() != null) {
+            configVersion = getConfig().get(versionName);
             hostVersion = Host.properties.getProperty(versionName);
             oldVersion = LessVersion.isLessVersion(hostVersion, configVersion);
         } else {
@@ -220,6 +208,14 @@ public class Host implements Serializable {
         Log.logger.info("isOldVersion() '" + versionName + "' hostVersion: " + hostVersion + " configVersion: "
                 + configVersion + " result: " + oldVersion);
         return oldVersion;
+    }
+
+    public Map<String, String> getConfig() {
+        return config;
+    }
+
+    public void setConfig(Map<String, String> config) {
+        this.config = config;
     }
 
     public void storeToLocalFile(Host host, String outFilePath) {
@@ -255,34 +251,108 @@ public class Host implements Serializable {
         return objectRestored;
     }
 
-    public static void getDataFromDataBase() {
-        actionMap = Action.getFromDataBase();
-        actionLinkMap = Link.getFromDataBase();
-        actionTypeMap = Type.getFromDataBase();
+    public void getDataFromDataBase() {
+        Action.getFromDataBase();
+        actionMap = Action.map;
 
-        actionTypeAppGetField = com.admoin.action.type.app.get.Field.getFromDataBase();
-        actionTypeAppGetPropertie = com.admoin.action.type.app.get.Propertie.getFromDataBase();
-        actionTypeDatabaseQueryUpsert = com.admoin.action.type.database.query.Upsert.getFromDataBase();
-        actionTypeDatabaseQuerySelect = com.admoin.action.type.database.query.Select.getFromDataBase();
-        actionTypeFileDownloadAwsS3 = com.admoin.action.type.file.download.AwsS3.getFromDataBase();
-        actionTypeFileDownloadPublicFile = com.admoin.action.type.file.download.PublicFile.getFromDataBase();
-        actionTypeFileExists = com.admoin.action.type.file.Exists.getFromDataBase();
-        actionTypeFileRemove = com.admoin.action.type.file.Remove.getFromDataBase();
-        actionTypeFileStart = com.admoin.action.type.file.Start.getFromDataBase();
-        actionTypeJsonGetJson = com.admoin.action.type.json.get.Json.getFromDataBase();
-        actionTypeJsonGetValue = com.admoin.action.type.json.get.Value.getFromDataBase();
-        actionTypeNetTestConnection = com.admoin.action.type.net.test.Connection.getFromDataBase();
-        actionTypeStringCompareContains = com.admoin.action.type.string.compare.Contains.getFromDataBase();
-        actionTypeStringCompareEquals = com.admoin.action.type.string.compare.Equals.getFromDataBase();
-        actionTypeStringCompareLess = com.admoin.action.type.string.compare.Less.getFromDataBase();
-        actionTypeStringCompareLessVersion = com.admoin.action.type.string.compare.LessVersion.getFromDataBase();
-        actionTypeStringFormatHex = com.admoin.action.type.string.format.Hex.getFromDataBase();
-        actionTypeSystemgetProperty = com.admoin.action.type.system.get.Property.getFromDataBase();
-        actionTypeSystemgetVariable = com.admoin.action.type.system.get.Variable.getFromDataBase();
-        actionTypeUrlGetText = com.admoin.action.type.url.get.Text.getFromDataBase();
-        actionTypeZipUnzip = com.admoin.action.type.zip.Unzip.getFromDataBase();
+        Link.getFromDataBase();
+        actionLinkMap = Link.map;
+
+        Type.getFromDataBase();
+        actionTypeMap = Type.map;
+
+        com.admoin.action.type.app.get.Field.getFromDataBase();
+        actionTypeAppGetField = com.admoin.action.type.app.get.Field.map;
+
+        com.admoin.action.type.app.get.Propertie.getFromDataBase();
+        actionTypeAppGetPropertie = com.admoin.action.type.app.get.Propertie.map;
+
+        com.admoin.action.type.database.query.Upsert.getFromDataBase();
+        actionTypeDatabaseQueryUpsert = com.admoin.action.type.database.query.Upsert.map;
+
+        com.admoin.action.type.database.query.Select.getFromDataBase();
+        actionTypeDatabaseQuerySelect = com.admoin.action.type.database.query.Select.map;
+
+        com.admoin.action.type.file.download.AwsS3.getFromDataBase();
+        actionTypeFileDownloadAwsS3 = com.admoin.action.type.file.download.AwsS3.map;
+
+        com.admoin.action.type.file.download.PublicFile.getFromDataBase();
+        actionTypeFileDownloadPublicFile = com.admoin.action.type.file.download.PublicFile.map;
+
+        com.admoin.action.type.file.Exists.getFromDataBase();
+        actionTypeFileExists = com.admoin.action.type.file.Exists.map;
+
+        com.admoin.action.type.file.Remove.getFromDataBase();
+        actionTypeFileRemove = com.admoin.action.type.file.Remove.map;
+
+        com.admoin.action.type.file.Start.getFromDataBase();
+        actionTypeFileStart = com.admoin.action.type.file.Start.map;
+
+        com.admoin.action.type.json.get.Json.getFromDataBase();
+        actionTypeJsonGetJson = com.admoin.action.type.json.get.Json.map;
+       
+        com.admoin.action.type.json.get.Value.getFromDataBase();
+        actionTypeJsonGetValue = com.admoin.action.type.json.get.Value.map;
+
+        com.admoin.action.type.net.test.Connection.getFromDataBase();
+        actionTypeNetTestConnection = com.admoin.action.type.net.test.Connection.map;
+
+        com.admoin.action.type.string.compare.Contains.getFromDataBase();
+        actionTypeStringCompareContains = com.admoin.action.type.string.compare.Contains.map;
+
+        com.admoin.action.type.string.compare.Equals.getFromDataBase();
+        actionTypeStringCompareEquals = com.admoin.action.type.string.compare.Equals.map;
+
+        com.admoin.action.type.string.compare.Less.getFromDataBase();
+        actionTypeStringCompareLess = com.admoin.action.type.string.compare.Less.map;
+
+        com.admoin.action.type.string.compare.LessVersion.getFromDataBase();
+        actionTypeStringCompareLessVersion = com.admoin.action.type.string.compare.LessVersion.map;
+
+        com.admoin.action.type.string.format.Hex.getFromDataBase();
+        actionTypeStringFormatHex = com.admoin.action.type.string.format.Hex.map;
+
+        com.admoin.action.type.system.get.Property.getFromDataBase();
+        actionTypeSystemgetProperty = com.admoin.action.type.system.get.Property.map;
+
+        com.admoin.action.type.system.get.Variable.getFromDataBase();
+        actionTypeSystemgetVariable = com.admoin.action.type.system.get.Variable.map;
+
+        com.admoin.action.type.url.get.Text.getFromDataBase();
+        actionTypeUrlGetText = com.admoin.action.type.url.get.Text.map;
+
+        com.admoin.action.type.zip.Unzip.getFromDataBase();
+        actionTypeZipUnzip = com.admoin.action.type.zip.Unzip.map;
 
         App.setUpdateConfig(false);
+    }
+
+    public void getDataFromLocalStorage() {
+        Action.map = actionMap;
+        Link.map = actionLinkMap;
+        Type.map = actionTypeMap;
+
+        com.admoin.action.type.app.get.Field.map = actionTypeAppGetField;
+        com.admoin.action.type.app.get.Propertie.map = actionTypeAppGetPropertie;
+        com.admoin.action.type.database.query.Upsert.map = actionTypeDatabaseQueryUpsert;
+        com.admoin.action.type.database.query.Select.map = actionTypeDatabaseQuerySelect;
+        com.admoin.action.type.file.download.AwsS3.map = actionTypeFileDownloadAwsS3;
+        com.admoin.action.type.file.download.PublicFile.map = actionTypeFileDownloadPublicFile;
+        com.admoin.action.type.file.Exists.map = actionTypeFileExists;
+        com.admoin.action.type.file.Remove.map = actionTypeFileRemove;
+        com.admoin.action.type.file.Start.map = actionTypeFileStart;
+        com.admoin.action.type.json.get.Json.map = actionTypeJsonGetJson;
+        com.admoin.action.type.json.get.Value.map = actionTypeJsonGetValue;
+        com.admoin.action.type.net.test.Connection.map = actionTypeNetTestConnection;
+        com.admoin.action.type.string.compare.Contains.map = actionTypeStringCompareContains;
+        com.admoin.action.type.string.compare.Equals.map = actionTypeStringCompareEquals;
+        com.admoin.action.type.string.compare.Less.map = actionTypeStringCompareLess;
+        com.admoin.action.type.string.compare.LessVersion.map = actionTypeStringCompareLessVersion;
+        com.admoin.action.type.string.format.Hex.map = actionTypeStringFormatHex;
+        com.admoin.action.type.system.get.Property.map = actionTypeSystemgetProperty;
+        com.admoin.action.type.system.get.Variable.map = actionTypeSystemgetVariable;
+        com.admoin.action.type.url.get.Text.map = actionTypeUrlGetText;
+        com.admoin.action.type.zip.Unzip.map = actionTypeZipUnzip;
     }
 
     public static Properties getProperties() throws Exception {
@@ -403,7 +473,7 @@ public class Host implements Serializable {
         timeToStart = LocalDateTime.now();
         Log.logger.info("Host.timeToStart: " + timeToStart);
 
-        List<Link> linkCheck = new ArrayList<>(Host.actionLinkMap.get(0));
+        List<Link> linkCheck = new ArrayList<>(Link.map.get(0));
         List<Link> linkCheckNew = new ArrayList<>();
 
         do {
@@ -422,13 +492,13 @@ public class Host implements Serializable {
                         Log.logger.info("Action. Id: " + action.getId() + ", TypeId: " + action.getTypeId()
                                 + ", Result: " + action.getResult() + ", LastStart: " + action.getLastStart());
 
-                        Host.actionMap.put(link.getToId(), action);
+                        Action.map.put(link.getToId(), action);
                     } catch (Exception e) {
                         Log.logger.warning(e.getMessage());
                     }
                 }
 
-                if (action.isCompleted() && Host.actionLinkMap.containsKey(link.getToId())) {
+                if (action.isCompleted() && Link.map.containsKey(link.getToId())) {
                     linkCheckNew.addAll(getLinkToNextAction(link, action.getResult()));
                 }
             });
@@ -444,7 +514,7 @@ public class Host implements Serializable {
 
     private List<Link> getLinkToNextAction(Link link, String source) {
         List<Link> linkCheckNew = new ArrayList<>();
-        Host.actionLinkMap.get(link.getToId()).forEach(linkMapItem -> {
+        Link.map.get(link.getToId()).forEach(linkMapItem -> {
             if (linkMapItem.getFromFalseResult().equals(link.isActionResultEqualsFalse())) {
                 linkMapItem.setSource(source);
                 linkCheckNew.add(linkMapItem);

@@ -18,6 +18,8 @@ public class Hex implements Serializable {
     private static String tablePath = "action/type/string/format/string_format_hex";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, Hex> map = new ConcurrentHashMap<>();
+
     public String string;
 
     public Hex(
@@ -25,7 +27,7 @@ public class Hex implements Serializable {
         this.string = string;
     }
 
-    public static ConcurrentMap<Integer, Hex> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionFileHex.getFromYandexDataBase()");
 
         Log.logger.info("new ActionFileHex[]");
@@ -44,7 +46,7 @@ public class Hex implements Serializable {
             Log.logger.info("New actionAppGetHex [actionId=" + actionId + ", string=" + string + "]");
         } while (result.next());
 
-        return actionMap;
+        Hex.map = actionMap;
     }
 
     public String start(String source) {

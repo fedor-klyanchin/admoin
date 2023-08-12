@@ -5,8 +5,27 @@ import org.testng.annotations.*;
 import com.admoin.action.Action;
 import com.admoin.action.Link;
 import com.admoin.action.type.Type;
+import com.admoin.action.type.app.get.Field;
+import com.admoin.action.type.app.get.Propertie;
 import com.admoin.action.type.database.query.Select;
 import com.admoin.action.type.database.query.Upsert;
+import com.admoin.action.type.file.Exists;
+import com.admoin.action.type.file.Remove;
+import com.admoin.action.type.file.Start;
+import com.admoin.action.type.file.download.AwsS3;
+import com.admoin.action.type.file.download.PublicFile;
+import com.admoin.action.type.json.get.Json;
+import com.admoin.action.type.json.get.Value;
+import com.admoin.action.type.net.test.Connection;
+import com.admoin.action.type.string.compare.Contains;
+import com.admoin.action.type.string.compare.Equals;
+import com.admoin.action.type.string.compare.Less;
+import com.admoin.action.type.string.compare.LessVersion;
+import com.admoin.action.type.string.format.Hex;
+import com.admoin.action.type.system.get.Property;
+import com.admoin.action.type.system.get.Variable;
+import com.admoin.action.type.url.get.Text;
+import com.admoin.action.type.zip.Unzip;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
@@ -102,16 +121,16 @@ public class DataBaseTest {
 
     @Test(groups = { "DataBaseTest" })
     public void testGetActionFromDataBase() {
-        actionMap = Action.getFromDataBase();
+        Action.getFromDataBase();
 
-        AssertJUnit.assertTrue(actionMap.size() > 0);
+        AssertJUnit.assertTrue(Action.map.size() > 0);
     }
 
     @Test(groups = { "DataBaseTest" }, dependsOnMethods = { "testGetActionFromDataBase" })
     public void getActionFromDataBaseCorrectValue() {
-        actionMap = Action.getFromDataBase();
+        Action.getFromDataBase();
 
-        Action action = actionMap.get(1);
+        Action action = Action.map.get(1);
 
         AssertJUnit.assertTrue(
                 action.getId() == 1 && action.getTypeId() == 1 && action.getStartIntervalSeconds() == 0);
@@ -119,18 +138,18 @@ public class DataBaseTest {
 
     @Test(groups = { "DataBaseTest" })
     public void testLinkGetFromDataBase() {
-        linkMap = Link.getFromDataBase();
-        AssertJUnit.assertTrue(linkMap.size() > 0);
+        Link.getFromDataBase();
+        AssertJUnit.assertTrue(Link.map.size() > 0);
     }
 
     @Test(groups = { "DataBaseTest" }, dependsOnMethods = { "testLinkGetFromDataBase" })
     public void getLinkFromDataBaseCorrectValue() {
         Boolean result = false;
 
-        linkMap = Link.getFromDataBase();
+        Link.getFromDataBase();
 
         List<Link> linkList = new ArrayList<>();
-        linkList = linkMap.get(2);
+        linkList = Link.map.get(2);
 
         for (Link linkItem : linkList) {
             if (linkItem.getFromId() == 2 && linkItem.getToId() == 4
@@ -144,16 +163,16 @@ public class DataBaseTest {
 
     @Test(groups = { "DataBaseTest" })
     public void testGetTypeFromDataBase() {
-        typeMap = Type.getFromDataBase();
+        Type.getFromDataBase();
 
-        AssertJUnit.assertTrue(typeMap.size() > 0);
+        AssertJUnit.assertTrue(Type.map.size() > 0);
     }
 
     @Test(groups = { "DataBaseTest" }, dependsOnMethods = { "testGetTypeFromDataBase" })
     public void getTypeFromDataBaseCorrectValue() {
-        typeMap = Type.getFromDataBase();
+        Type.getFromDataBase();
 
-        Type type = typeMap.get(1);
+        Type type = Type.map.get(1);
 
         AssertJUnit.assertTrue(type.getId() == 1 && type.getName().equals("file.Exists"));
     }
@@ -219,33 +238,33 @@ public class DataBaseTest {
 
     @Test(groups = { "DataBaseTest" })
     public void hostGetDataFromDataBase() throws Exception {
-        Host.getDataFromDataBase();
+        host.getDataFromDataBase();
 
         AssertJUnit.assertTrue(
-                Host.actionMap.size() != 0 &&
-                        Host.actionTypeMap.size() != 0 &&
-                        Host.actionLinkMap.size() != 0 &&
-                        Host.actionTypeAppGetField.size() != 0 &&
-                        Host.actionTypeAppGetPropertie.size() != 0 &&
-                        Host.actionTypeDatabaseQueryUpsert.size() != 0 &&
-                        Host.actionTypeDatabaseQuerySelect.size() != 0 &&
-                        Host.actionTypeFileDownloadAwsS3.size() != 0 &&
-                        Host.actionTypeFileDownloadPublicFile.size() != 0 &&
-                        Host.actionTypeFileExists.size() != 0 &&
-                        Host.actionTypeFileRemove.size() != 0 &&
-                        Host.actionTypeFileStart.size() != 0 &&
-                        Host.actionTypeJsonGetJson.size() != 0 &&
-                        Host.actionTypeJsonGetValue.size() != 0 &&
-                        Host.actionTypeNetTestConnection.size() != 0 &&
-                        Host.actionTypeStringCompareContains.size() != 0 &&
-                        Host.actionTypeStringCompareEquals.size() != 0 &&
-                        Host.actionTypeStringCompareLess.size() != 0 &&
-                        Host.actionTypeStringCompareLessVersion.size() != 0 &&
-                        Host.actionTypeStringFormatHex.size() != 0 &&
-                        Host.actionTypeSystemgetProperty.size() != 0 &&
-                        Host.actionTypeSystemgetVariable.size() != 0 &&
-                        Host.actionTypeUrlGetText.size() != 0 &&
-                        Host.actionTypeZipUnzip.size() != 0);
+                Action.map.size() != 0 &&
+                        Type.map.size() != 0 &&
+                        Link.map.size() != 0 &&
+                        Field.map.size() != 0 &&
+                        Propertie.map.size() != 0 &&
+                        Upsert.map.size() != 0 &&
+                        Select.map.size() != 0 &&
+                        AwsS3.map.size() != 0 &&
+                        PublicFile.map.size() != 0 &&
+                        Exists.map.size() != 0 &&
+                        Remove.map.size() != 0 &&
+                        Start.map.size() != 0 &&
+                        Json.map.size() != 0 &&
+                        Value.map.size() != 0 &&
+                        Connection.map.size() != 0 &&
+                        Contains.map.size() != 0 &&
+                        Equals.map.size() != 0 &&
+                        Less.map.size() != 0 &&
+                        LessVersion.map.size() != 0 &&
+                        Hex.map.size() != 0 &&
+                        Property.map.size() != 0 &&
+                        Variable.map.size() != 0 &&
+                        Text.map.size() != 0 &&
+                        Unzip.map.size() != 0);
     }
 
     @Test(groups = { "DataBaseTest" }, dependsOnMethods = { "hostGetDataFromDataBase" })
@@ -273,7 +292,7 @@ public class DataBaseTest {
 
         Action action = new Action(10, 1, 0);
         action.setResult(testValue);
-        Host.actionMap.put(10, action);
+        Action.map.put(10, action);
 
         actionUpsert.start();
 
@@ -289,7 +308,7 @@ public class DataBaseTest {
 
         Action action = new Action(10, 1, 0);
         action.setResult(testValue);
-        Host.actionMap.put(10, action);
+        Action.map.put(10, action);
 
         actionUpsert.start();
 
@@ -302,6 +321,6 @@ public class DataBaseTest {
     public void startActionMapOneActionTrue() throws Exception {
         host.startActionMap();
 
-        AssertJUnit.assertTrue(Host.actionMap.get(7).getResult().equals("true"));
+        AssertJUnit.assertTrue(Action.map.get(7).getResult().equals("true"));
     }
 }

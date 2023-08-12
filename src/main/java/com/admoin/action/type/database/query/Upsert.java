@@ -18,6 +18,8 @@ public class Upsert implements Serializable {
     private static String tablePath = "action/type/database/query/database_query_upsert";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, Upsert> map = new ConcurrentHashMap<>();
+
     private int actionIdResult;
     private String resultTablePath;
     private String resultTableName;
@@ -54,7 +56,7 @@ public class Upsert implements Serializable {
         return resultTablePath;
     }
 
-    public static ConcurrentMap<Integer, Upsert> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionAppGetField.getFromYandexDataBase()");
 
         Log.logger.info("new ActionAppGetField[]");
@@ -74,12 +76,12 @@ public class Upsert implements Serializable {
             Log.logger.info("New action [actionId=" + actionId + ", resultTablePath=" + resultTablePath + "]");
         } while (result.next());
 
-        return actionMap;
+        Upsert.map = actionMap;
     }
 
     public String start() {
         String result = "false";
-        Action action = Host.actionMap.get(actionIdResult);
+        Action action = Action.map.get(actionIdResult);
         setResultTargetAction(action.getResult());
 
         Boolean isChangeResult = !action.getResult().equals(action.getResultOld());

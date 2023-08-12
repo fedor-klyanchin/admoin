@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import com.admoin.action.Action;
+import com.admoin.action.Link;
+import com.admoin.action.type.Type;
 import com.admoin.action.type.file.Start;
 
 public class App {
@@ -20,6 +23,7 @@ public class App {
     private static String appVersionPropertyName = "app_version";
     private static String configVersionPropertyName = "config_version";
     private static Boolean retryExecution;
+    static Host host;
 
     public static String getAppVersionPropertyName() {
         return appVersionPropertyName;
@@ -67,13 +71,13 @@ public class App {
 
         dataBaseReadOnlyConnectionString = Host.properties.getProperty("yandex_data_base_read_only_connection_string");
 
-        Host host = Host.restoreFromLocalFile();
+        host = Host.restoreFromLocalFile();
         Host.getProperties();
 
         Host.setProperty(App.getAppVersionPropertyName(), APP_VERSION);
         App.storeHostData(host);
-        oldVersionApp = Host.isOldVersion(App.getAppVersionPropertyName());
-        oldVersionConfig = Host.isOldVersion(App.getConfigVersionPropertyName());
+        oldVersionApp = host.isOldVersion(App.getAppVersionPropertyName());
+        oldVersionConfig = host.isOldVersion(App.getConfigVersionPropertyName());
 
         if (Integer.parseInt(getPropertyHostId()) == (host.getId())) {
             startMainRunLoop(host);
@@ -132,24 +136,27 @@ public class App {
 
             if (config != null) {
                 setConfig(host);
+                App.storeHostData(host);
             }
         }
 
         if (App.isGetDataFromDataBase()) {
-            Host.getDataFromDataBase();
+            host.getDataFromDataBase();
 
             Host.storeProperties(Host.properties, Host.pathPropertiesCurrent);
             App.storeHostData(host);
+        } else {
+            host.getDataFromLocalStorage();
         }
     }
 
     private static void setConfig(Host host) {
-        Host.config = config;
+        host.setConfig(config);
 
-        oldVersionApp = Host.isOldVersion(App.getAppVersionPropertyName());
-        oldVersionConfig = Host.isOldVersion(App.getConfigVersionPropertyName());
+        oldVersionApp = host.isOldVersion(App.getAppVersionPropertyName());
+        oldVersionConfig = host.isOldVersion(App.getConfigVersionPropertyName());
 
-        host.configVersion = config.get(App.getConfigVersionPropertyName());
+        host.config.put("config_version",config.get(App.getConfigVersionPropertyName()));
 
         config.forEach((key, value) -> {
             try {
@@ -179,7 +186,7 @@ public class App {
     }
 
     static boolean isGetDataFromDataBase() {
-        return App.updateConfig || oldVersionApp || oldVersionConfig || Host.actionMap.size() == 0 || Host.actionLinkMap.size() == 0 || Host.actionTypeMap.size() == 0 ||
+        return App.updateConfig || oldVersionApp || oldVersionConfig || Action.map.size() == 0 || Link.map.size() == 0 || Type.map.size() == 0 ||
         isDatabaseConnectionStringChanged();
     }
 
@@ -213,9 +220,14 @@ public class App {
     }
 
     static Boolean isRetryExecution() {
-        Boolean hostConfigNotNull = Host.config != null;
+        Boolean hostConfigNotNull;
+        if (host != null) {
+            hostConfigNotNull = host.getConfig() != null;
+        } else {
+            hostConfigNotNull = false;
+        }
 
-        Log.logger.info("Host.config != null: " + hostConfigNotNull);
+        Log.logger.info("host.getConfig() != null: " + hostConfigNotNull);
         Log.logger.info("App.exitApp: " + App.exitApp);
 
         boolean useLotMemory = App.isUseLotMemory();
@@ -238,8 +250,8 @@ public class App {
         Log.logger.info("totalMemory: " + Runtime.getRuntime().totalMemory());
 
         int appTotalUsedMemoryLimitBytes = 0;
-        if (Host.config.containsKey("app_total_used_memory_limit_bytes")) {
-            appTotalUsedMemoryLimitBytes = Integer.parseInt(Host.config.get("app_total_used_memory_limit_bytes"));
+        if (host != null && host.getConfig().containsKey("app_total_used_memory_limit_bytes")) {
+            appTotalUsedMemoryLimitBytes = Integer.parseInt(host.getConfig().get("app_total_used_memory_limit_bytes"));
         } else {
             appTotalUsedMemoryLimitBytes = 300000000;
         }

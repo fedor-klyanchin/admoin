@@ -12,6 +12,7 @@ import tech.ydb.table.result.ResultSetReader;
 
 public class Equals extends Compare {
     private static String tablePath = "action/type/string/compare/string_compare_equals";
+    public static ConcurrentMap<Integer, Equals> map = new ConcurrentHashMap<>();
 
     @Override
     public String getControlValue() {
@@ -27,7 +28,7 @@ public class Equals extends Compare {
         result = currentValue.equals(controlValue);
     }
 
-    public static ConcurrentMap<Integer, Equals> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionStringCompareEquals.getFromYandexDataBase()");
 
         Log.logger.info("new ActionStringCompareEquals[]");
@@ -46,6 +47,6 @@ public class Equals extends Compare {
             Log.logger.info("New actionStringCompareEquals [actionId=" + actionId + ", controlValue=" + controlValue + "]");
         } while (result.next());
 
-        return actionMap;
+        Equals.map = actionMap;
     }
 }

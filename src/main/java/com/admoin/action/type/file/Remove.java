@@ -18,6 +18,8 @@ public class Remove implements Serializable {
     private static String tablePath = "action/type/file/file_remove";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, Remove> map = new ConcurrentHashMap<>();
+
     public static String getTablePath() {
         return tablePath;
     }
@@ -26,7 +28,7 @@ public class Remove implements Serializable {
         return tableName;
     }
 
-    public static ConcurrentMap<Integer, Remove> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionFileRemove.getFromYandexDataBase()");
 
         Log.logger.info("new ActionFileRemove[]");
@@ -45,7 +47,7 @@ public class Remove implements Serializable {
             Log.logger.info("New actionAppGetRemove [actionId=" + actionId + ", path=" + path + "]");
         } while (result.next());
 
-        return actionMap;
+        Remove.map = actionMap;
     }
 
     private String path;

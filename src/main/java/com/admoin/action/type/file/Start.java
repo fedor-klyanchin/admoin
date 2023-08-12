@@ -21,7 +21,9 @@ public class Start implements Serializable {
     private static String tablePath = "action/type/file/file_start";
     private static String tableName = Type.getTableName(tablePath);
 
-    public static ConcurrentMap<Integer, Start> getFromDataBase() {
+    public static ConcurrentMap<Integer, Start> map = new ConcurrentHashMap<>();
+
+    public static void getFromDataBase() {
         Log.logger.info("ActionFileStart.getFromYandexDataBase()");
 
         Log.logger.info("new ActionFileStart[]");
@@ -40,7 +42,7 @@ public class Start implements Serializable {
             Log.logger.info("New actionAppGetStart [actionId=" + actionId + ", command=" + command + "]");
         } while (result.next());
 
-        return actionMap;
+        Start.map = actionMap;
     }
 
     public static List<String> getListCommand(String source) {

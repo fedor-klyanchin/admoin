@@ -9,7 +9,7 @@ import com.admoin.Host;
 import com.admoin.Log;
 
 public class TextTest {
-    String urlString = "https://www.google.com";
+    String urlString = "https://yandex.com/company/";
     String containsText = "/title";
     String delimiterFirst = ">";
     String delimiterSecond = "</title";
@@ -43,6 +43,6 @@ public class TextTest {
     public void getResultTrue() throws Exception {
         String report = action.start();
 
-        AssertJUnit.assertTrue(report.equals("Google"));
+        AssertJUnit.assertTrue(report.equals("Yandex "));
     }
 }

@@ -15,6 +15,7 @@ import tech.ydb.table.result.ResultSetReader;
 
 public class LessVersion extends Compare {
     private static String tablePath = "action/type/string/compare/string_compare_less_version";
+    public static ConcurrentMap<Integer, LessVersion> map = new ConcurrentHashMap<>();
 
     @Override
     public String getControlValue() {
@@ -62,7 +63,7 @@ public class LessVersion extends Compare {
         return result;
     }
 
-    public static ConcurrentMap<Integer, LessVersion> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionStringCompareLessVersion.getFromYandexDataBase()");
 
         Log.logger.info("new ActionStringCompareLessVersion[]");
@@ -81,6 +82,6 @@ public class LessVersion extends Compare {
             Log.logger.info("New actionStringCompareLessVersion [actionId=" + actionId + ", controlValue=" + controlValue + "]");
         } while (result.next());
 
-        return actionMap;
+        LessVersion.map = actionMap;
     }
 }

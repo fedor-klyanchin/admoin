@@ -28,6 +28,8 @@ public class AwsS3 implements Serializable {
     private static String tablePath = "action/type/file/download/file_download_aws_s3";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, AwsS3> map = new ConcurrentHashMap<>();
+
     public String getBucketName() {
         return bucketName;
     }
@@ -67,7 +69,7 @@ public class AwsS3 implements Serializable {
         this.secretKey = secretKey;
     }
 
-    public static ConcurrentMap<Integer, AwsS3> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionFileDownload.getFromYandexDataBase()");
 
         Log.logger.info("new ActionFileDownload[]");
@@ -96,7 +98,7 @@ public class AwsS3 implements Serializable {
                     + " objectLocalPath: " + objectLocalPath);
         } while (result.next());
         
-        return actionMap;
+        AwsS3.map = actionMap;
     }
 
     String start() throws Exception {

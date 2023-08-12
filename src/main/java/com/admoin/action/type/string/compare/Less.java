@@ -15,6 +15,7 @@ import tech.ydb.table.result.ResultSetReader;
 
 public class Less extends Compare {
     private static String tablePath = "action/type/string/compare/string_compare_less";
+    public static ConcurrentMap<Integer, Less> map = new ConcurrentHashMap<>();
 
     @Override
     public String getControlValue() {
@@ -42,7 +43,7 @@ public class Less extends Compare {
         return result;
     }
 
-    public static ConcurrentMap<Integer, Less> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionStringCompareLess.getFromYandexDataBase()");
 
         String tableName = Type.getTableName(tablePath);
@@ -63,6 +64,6 @@ public class Less extends Compare {
             Log.logger.info("New actionStringCompareLess [actionId=" + actionId + ", controlValue=" + controlValue + "]");
         } while (result.next());
 
-        return actionMap;
+        Less.map = actionMap;
     }
 }

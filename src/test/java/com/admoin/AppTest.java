@@ -4,13 +4,14 @@ import org.testng.AssertJUnit;
 import org.testng.annotations.*;
 
 public class AppTest {
+    Host host;
+
     @BeforeClass
     public void setUp() throws Exception {
         // code that will be invoked when this test is instantiated
         Log.create();
         Host.getProperties();
-        Host host = new Host();
-        host.restoreFromLocalFile();
+        host = Host.restoreFromLocalFile();
         host.id = Integer.parseInt(Host.properties.getProperty("id"));
         Host.setProperty(App.getAppVersionPropertyName(), App.APP_VERSION);
     }
@@ -20,7 +21,7 @@ public class AppTest {
         AssertJUnit.assertTrue(
                 !App.isRetryExecution() ||
                         (App.isRetryExecution() &&
-                                Host.config != null &&
+                                host.getConfig() != null &&
                                 !App.oldVersionApp &&
                                 !App.isUseLotMemory() &&
                                 !App.exitApp));

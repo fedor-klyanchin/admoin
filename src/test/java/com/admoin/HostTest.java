@@ -31,12 +31,13 @@ public class HostTest {// configVersion =
             Log.logger.warning(e.getMessage());
         }
 
-        host.restoreFromLocalFile();
+        Host.restoreFromLocalFile();
+        Host.getProperties();
     }
 
     @Test(groups = { "Host" })
     public void hostNew() throws Exception {
-        AssertJUnit.assertTrue(host.configVersion == Host.properties.getProperty(App.getConfigVersionPropertyName()));
+        AssertJUnit.assertTrue(host.getId()== Integer.parseInt(Host.properties.getProperty("id")));
     }
 
     @Test(groups = { "Host" }, dependsOnMethods = { "hostNew" })
@@ -104,8 +105,8 @@ public class HostTest {// configVersion =
 
     @Test(groups = { "Host" })
     public void isOldVersionTrue() throws Exception {
-        Host.config.put(App.getAppVersionPropertyName(), Host.properties.getProperty(App.getAppVersionPropertyName()));
-        AssertJUnit.assertFalse(Host.isOldVersion(App.getAppVersionPropertyName()));
+        host.getConfig().put(App.getAppVersionPropertyName(), Host.properties.getProperty(App.getAppVersionPropertyName()));
+        AssertJUnit.assertFalse(host.isOldVersion(App.getAppVersionPropertyName()));
     }
 
     @Test(groups = { "Host" })
@@ -126,14 +127,14 @@ public class HostTest {// configVersion =
     @Test
     @BeforeGroups("HostStartMap")
     public void beforeGroupHostStartMap() throws Exception {
-        Host.actionMap.clear();
-        Host.actionMap.put(1, new Action(1, 1, 0));
-        Host.actionMap.put(2, new Action(2, 1, 0));
-        Host.actionMap.put(3, new Action(3, 1, 0));
-        Host.actionMap.put(4, new Action(4, 1, 0));
-        Host.actionMap.put(5, new Action(5, 1, 0));
-        Host.actionMap.put(6, new Action(6, 1, 60));
-        Host.actionMap.put(8, new Action(8, 1, 0));
+        Action.map.clear();
+        Action.map.put(1, new Action(1, 1, 0));
+        Action.map.put(2, new Action(2, 1, 0));
+        Action.map.put(3, new Action(3, 1, 0));
+        Action.map.put(4, new Action(4, 1, 0));
+        Action.map.put(5, new Action(5, 1, 0));
+        Action.map.put(6, new Action(6, 1, 60));
+        Action.map.put(8, new Action(8, 1, 0));
 
         List<Link> linkList0 = new ArrayList<>();
         linkList0.add(new Link(0, 1, false));
@@ -150,22 +151,22 @@ public class HostTest {// configVersion =
         List<Link> linkList6 = new ArrayList<>();
         linkList6.add(new Link(6, 8, false));
 
-        Host.actionLinkMap.clear();
-        Host.actionLinkMap.put(0, linkList0);
-        Host.actionLinkMap.put(1, linkList1);
-        Host.actionLinkMap.put(2, linkList2);
-        Host.actionLinkMap.put(6, linkList6);
+        Link.map.clear();
+        Link.map.put(0, linkList0);
+        Link.map.put(1, linkList1);
+        Link.map.put(2, linkList2);
+        Link.map.put(6, linkList6);
 
-        Host.actionTypeMap.clear();
-        Host.actionTypeMap.put(1, new Type(1, "file.Exists", null));
+        Type.map.clear();
+        Type.map.put(1, new Type(1, "file.Exists", null));
 
-        Host.actionTypeFileExists.put(1, new Exists("pom0.xml"));
-        Host.actionTypeFileExists.put(2, new Exists("README.md"));
-        Host.actionTypeFileExists.put(3, new Exists("pom.xml"));
-        Host.actionTypeFileExists.put(4, new Exists("README.md"));
-        Host.actionTypeFileExists.put(5, new Exists("README.md"));
-        Host.actionTypeFileExists.put(6, new Exists("README.md"));
-        Host.actionTypeFileExists.put(8, new Exists("README.md"));
+        Exists.map.put(1, new Exists("pom0.xml"));
+        Exists.map.put(2, new Exists("README.md"));
+        Exists.map.put(3, new Exists("pom.xml"));
+        Exists.map.put(4, new Exists("README.md"));
+        Exists.map.put(5, new Exists("README.md"));
+        Exists.map.put(6, new Exists("README.md"));
+        Exists.map.put(8, new Exists("README.md"));
 
         host.startActionMap();
         startActionMapSecond = LocalDateTime.now();
@@ -174,45 +175,45 @@ public class HostTest {// configVersion =
 
     @Test(groups = { "HostStartMap" }, dependsOnMethods = { "beforeGroupHostStartMap" })
     public void startActionMapOneActionTrue() throws Exception {
-        AssertJUnit.assertTrue(Host.actionMap.get(2).getResult().equals("true"));
+        AssertJUnit.assertTrue(Action.map.get(2).getResult().equals("true"));
     }
 
     @Test(groups = { "HostStartMap" }, dependsOnMethods = { "beforeGroupHostStartMap" })
     public void startActionMapOneActionFalse() throws Exception {
-        AssertJUnit.assertFalse(Host.actionMap.get(1).getResult().equals("true"));
+        AssertJUnit.assertFalse(Action.map.get(1).getResult().equals("true"));
     }
 
     @Test(groups = { "HostStartMap" }, dependsOnMethods = { "beforeGroupHostStartMap" })
     public void startActionMapTwoAction() throws Exception {
         AssertJUnit.assertTrue(
-                Host.actionMap.get(1).getResult().equals("false") &&
-                        Host.actionMap.get(2).getResult().equals("true"));
+                Action.map.get(1).getResult().equals("false") &&
+                        Action.map.get(2).getResult().equals("true"));
     }
 
     @Test(groups = { "HostStartMap" }, dependsOnMethods = { "beforeGroupHostStartMap" })
     public void startActionMapTreeActionTwoLevel() throws Exception {
         AssertJUnit.assertTrue(
-                Host.actionMap.get(1).getResult().equals("false") &&
-                        !Host.actionMap.get(1).getLastStart().isBefore(localDateTimeTestStart) &&
-                        Host.actionMap.get(2).getResult().equals("true") &&
-                        !Host.actionMap.get(2).getLastStart().isBefore(localDateTimeTestStart) &&
-                        Host.actionMap.get(3).getResult().equals("") &&
-                        !Host.actionMap.get(3).getLastStart().isAfter(Host.actionMap.get(1).getLastStart()) &&
-                        Host.actionMap.get(4).getResult().equals("true") &&
-                        !Host.actionMap.get(4).getLastStart().isBefore(Host.actionMap.get(2).getLastStart()));
+                Action.map.get(1).getResult().equals("false") &&
+                        !Action.map.get(1).getLastStart().isBefore(localDateTimeTestStart) &&
+                        Action.map.get(2).getResult().equals("true") &&
+                        !Action.map.get(2).getLastStart().isBefore(localDateTimeTestStart) &&
+                        Action.map.get(3).getResult().equals("") &&
+                        !Action.map.get(3).getLastStart().isAfter(Action.map.get(1).getLastStart()) &&
+                        Action.map.get(4).getResult().equals("true") &&
+                        !Action.map.get(4).getLastStart().isBefore(Action.map.get(2).getLastStart()));
     }
 
     @Test(groups = { "HostStartMap" }, dependsOnMethods = { "beforeGroupHostStartMap" })
     public void startActionMapTreeActionTwoLevelUseFalseResult() throws Exception {
         AssertJUnit.assertTrue(
-                Host.actionMap.get(5).getResult().equals("true") &&
-                        !Host.actionMap.get(4).getLastStart().isBefore(Host.actionMap.get(1).getLastStart()));
+                Action.map.get(5).getResult().equals("true") &&
+                        !Action.map.get(4).getLastStart().isBefore(Action.map.get(1).getLastStart()));
     }
 
     @Test(groups = { "HostStartMap" }, dependsOnMethods = { "beforeGroupHostStartMap" })
     public void startActionTestStartIntervalSeconds() throws Exception {
-        LocalDateTime startActionFirst = Host.actionMap.get(6).getLastStart();
-        LocalDateTime startActionSecond = Host.actionMap.get(8).getLastStart();
+        LocalDateTime startActionFirst = Action.map.get(6).getLastStart();
+        LocalDateTime startActionSecond = Action.map.get(8).getLastStart();
 
         AssertJUnit.assertTrue(
             !startActionMapSecond.isBefore(startActionFirst) &&

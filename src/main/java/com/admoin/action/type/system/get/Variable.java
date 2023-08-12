@@ -17,6 +17,8 @@ public class Variable implements Serializable {
     private static String tablePath = "action/type/system/get/system_get_variable";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, Variable> map = new ConcurrentHashMap<>();
+
     public String name;
 
     public Variable(
@@ -28,7 +30,7 @@ public class Variable implements Serializable {
         return name;
     }
 
-    public static ConcurrentMap<Integer, Variable> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionFileVariable.getFromYandexDataBase()");
 
         Log.logger.info("new ActionFileVariable[]");
@@ -47,7 +49,7 @@ public class Variable implements Serializable {
             Log.logger.info("New action [actionId=" + actionId + ", name=" + name + "]");
         } while (result.next());
 
-        return actionMap;
+        Variable.map = actionMap;
     }
 
     public String start() {

@@ -23,6 +23,8 @@ public class Text implements Serializable {
     private static String tablePath = "action/type/url/get/url_get_text";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, Text> map = new ConcurrentHashMap<>();
+
     public String urlString;
     public String containsText;
     public String delimiterFirst;
@@ -42,7 +44,7 @@ public class Text implements Serializable {
         this.useSecondDelimiterFirst = useSecondDelimiterFirst;
     }
 
-    public static ConcurrentMap<Integer, Text> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionFileText.getFromYandexDataBase()");
 
         Log.logger.info("new ActionFileText[]");
@@ -70,7 +72,7 @@ public class Text implements Serializable {
                     .info("New action. actionId: " + actionId + " containsText: " + containsText);
         } while (result.next());
 
-        return actionMap;
+        Text.map = actionMap;
     }
 
     public String getUrlString() {

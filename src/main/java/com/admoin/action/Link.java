@@ -15,6 +15,8 @@ import tech.ydb.table.result.ResultSetReader;
 public class Link implements Serializable {
     private static final long serialVersionUID = 8L;
 
+    public static ConcurrentMap<Integer, List<Link>> map = new ConcurrentHashMap<>();
+
     private int fromId;
     private int toId;
     private Boolean fromFalseResult;
@@ -52,7 +54,7 @@ public class Link implements Serializable {
     }
 
     public Action getActionFromMap() {
-        return Host.actionMap.getOrDefault(getToId(), new Action(0, 0, 0));
+        return Action.map.getOrDefault(getToId(), new Action(0, 0, 0));
     }
 
     public String getActionResult() {
@@ -63,7 +65,7 @@ public class Link implements Serializable {
         return Boolean.logicalOr(getActionResult().equals("false"), getActionResult().equals("0"));
     }
 
-    public static ConcurrentMap<Integer, List<Link>> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("Link.getFromYandexDataBase()");
 
         String query = "SELECT"
@@ -95,6 +97,6 @@ public class Link implements Serializable {
             Log.logger.info("New Link. fromId: " + fromId + " toId: " + toId);
         } while (result.next());
 
-        return linkMap;
+        Link.map = linkMap;
     }
 }

@@ -17,6 +17,8 @@ public class Select implements Serializable {
     private static String tablePath = "action/type/database/query/database_query_select";
     private static String tableName = Type.getTableName(tablePath);
 
+    public static ConcurrentMap<Integer, Select> map = new ConcurrentHashMap<>();
+
     private String resultTablePath;
     private String resultTableName;
 
@@ -34,7 +36,7 @@ public class Select implements Serializable {
         return resultTablePath;
     }
 
-    public static ConcurrentMap<Integer, Select> getFromDataBase() {
+    public static void getFromDataBase() {
         Log.logger.info("ActionAppGetField.getFromYandexDataBase()");
 
         Log.logger.info("new ActionAppGetField[]");
@@ -53,7 +55,7 @@ public class Select implements Serializable {
             Log.logger.info("New action [actionId=" + actionId + ", resultTablePath=" + resultTablePath + "]");
         } while (result.next());
 
-        return actionMap;
+        Select.map = actionMap;
     }
 
     public String start() {
