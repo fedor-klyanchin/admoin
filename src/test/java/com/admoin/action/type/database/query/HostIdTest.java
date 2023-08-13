@@ -7,13 +7,11 @@ import org.testng.annotations.Test;
 
 import com.admoin.Host;
 import com.admoin.Log;
-import com.admoin.action.Action;
 
 public class HostIdTest {
     private String resultTablePath = "test/table_name";
     private Select actionStringCompareUpsert = new Select(resultTablePath);
     private ConcurrentHashMap<Integer, Select> actionDataBaseQueryHostIdMap = new ConcurrentHashMap<>();
-    private Action action = new Action(1, 1, 0);
 
     @Test
     @BeforeClass

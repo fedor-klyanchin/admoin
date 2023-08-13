@@ -8,7 +8,6 @@ import org.testng.annotations.Test;
 
 import com.admoin.Host;
 import com.admoin.Log;
-import com.admoin.action.Action;
 import com.admoin.action.type.Type;
 
 public class SelectTest {
@@ -16,7 +15,6 @@ public class SelectTest {
     private String tableName = Type.getTableName(tablePath);
     private Select actionSelect = new Select(tablePath);
     private ConcurrentHashMap<Integer, Select> actionDataBaseQuerySelectMap = new ConcurrentHashMap<>();
-    private Action action = new Action(1, 1, 0);
 
     @Test
     @BeforeClass

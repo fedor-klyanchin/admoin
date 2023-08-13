@@ -15,8 +15,7 @@ public class ActionTest {
     public void beforeClass() throws Exception {
         Log.create();
         Host.getProperties();
-        Host host = new Host();
-        host.restoreFromLocalFile();
+        Host.restoreFromLocalFile();
     }
 
     @Test(groups = { "Action" })
