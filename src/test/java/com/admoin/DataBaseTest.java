@@ -59,7 +59,7 @@ public class DataBaseTest {
         Log.create();
         Host.getProperties();
         host = new Host();
-        host.restoreFromLocalFile();
+        Host.restoreFromLocalFile();
 
         DataBase.closeAll();
 
@@ -188,7 +188,7 @@ public class DataBaseTest {
         host.setId(0);
         Host.getProperties();
         AssertJUnit.assertTrue(host.id == 1);
-        host.restoreFromLocalFile();
+        Host.restoreFromLocalFile();
     }
 
     @Test(groups = { "DataBaseTest" }, dependsOnMethods = { "hostSetId" })
