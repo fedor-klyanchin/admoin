@@ -75,7 +75,6 @@ public class Select implements Serializable {
 
         try {
             ResultSetReader resultQuery = Host.dataBaseReadWrite.getQuery(query);
-            //resultQuery.next();
             result = DataBase.getColumnString(resultQuery, columnNameValue);
         } catch (Exception e) {
             Log.logger.warning(e.getMessage());
