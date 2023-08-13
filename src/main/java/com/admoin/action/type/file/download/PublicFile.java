@@ -82,33 +82,25 @@ public class PublicFile implements Serializable {
         Log.logger.info("FileOperation.download(" + remotePath + ", " + localPath + ")");
         Boolean result = false;
         Path path = FileSystems.getDefault().getPath(localPath);
+        URI url = null;
 
         try {
-            URI url = URI.create(remotePath);
+            url = URI.create(remotePath);
             InputStream in = url.toURL().openStream();
 
-            try {
-                Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
-                File file = new File(localPath);
-                result = file.exists();
-            } catch (FileAlreadyExistsException e) {
-                Log.logger.warning("File of that name already exists");
-            } catch (DirectoryNotEmptyException e) {
-                Log.logger.warning("Non-empty directory");
-            } catch (UnsupportedOperationException e) {
-                Log.logger.warning("Contains a copy option that is not supported");
-            } catch (SecurityException e) {
-                Log.logger.warning("Write access denied");
-            } catch (IOException e) {
-                // Log.logger.warning("Unable to copy: " + url + ": " + url + path);
-                Log.logger.warning("Unable to copy: %s: %s%n".replace("%s", url.toString()).replace("%n", path.toString()));
-            } catch (Exception e) {
-                Log.logger.warning(e.getMessage());
-            }
-        } catch (MalformedURLException e) {
-            Log.logger.warning("new URL() failed");
+            Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
+            File file = new File(localPath);
+            result = file.exists();
+        } catch (FileAlreadyExistsException e) {
+            Log.logger.warning("File of that name already exists");
+        } catch (DirectoryNotEmptyException e) {
+            Log.logger.warning("Non-empty directory");
+        } catch (UnsupportedOperationException e) {
+            Log.logger.warning("Contains a copy option that is not supported");
+        } catch (SecurityException e) {
+            Log.logger.warning("Write access denied");
         } catch (IOException e) {
-            Log.logger.warning("I/O error reading or writing");
+            Log.logger.warning("Unable to copy: %s: %s%n".replace("%s", remotePath).replace("%n", path.toString()));
         } catch (Exception e) {
             Log.logger.warning(e.getMessage());
         }
