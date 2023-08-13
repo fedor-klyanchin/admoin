@@ -3,8 +3,6 @@ package com.admoin;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ForkJoinPool;
 
 import com.admoin.action.type.net.test.Connection;
@@ -207,12 +205,6 @@ public class DataBase {
         } catch (Exception e) {
             Log.logger.warning(e.getMessage());
         }
-    }
-
-    private static String getLocalDateTimeNow() {
-        LocalDateTime localDateTimeNow = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        return localDateTimeNow.format(formatter);
     }
 
     public static int getColumnInt(ResultSetReader result, String columnName) {

@@ -110,7 +110,6 @@ public class Host implements Serializable {
     private ConcurrentMap<Integer, Text> actionTypeUrlGetText = new ConcurrentHashMap<>();
     private ConcurrentMap<Integer, Unzip> actionTypeZipUnzip = new ConcurrentHashMap<>();
 
-    private ConcurrentMap<Integer, Action> actionDataBase = new ConcurrentHashMap<>();
     List<Link> linkDataBase = new ArrayList<>();
     public static LocalDateTime timeToStart;
 
