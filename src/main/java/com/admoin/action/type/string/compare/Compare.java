@@ -1,8 +1,10 @@
 package com.admoin.action.type.string.compare;
 
+import java.io.Serializable;
+
 import com.admoin.Log;
 
-public abstract class Compare {
+public abstract class Compare implements Serializable {
     Boolean result = false;
     protected String controlValue;
     protected String currentValue;
