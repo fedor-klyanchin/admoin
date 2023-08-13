@@ -82,35 +82,35 @@ public class Host implements Serializable {
 
     public LocalDateTime onlineDateTime;
     public LocalDateTime syncDateTime;
-    public Map<String, String> config = new HashMap<>();
+    private Map<String, String> config = new HashMap<>();
 
-    public ConcurrentMap<Integer, Action> actionMap = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, List<Link>> actionLinkMap = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Type> actionTypeMap = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Action> actionMap = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, List<Link>> actionLinkMap = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Type> actionTypeMap = new ConcurrentHashMap<>();
 
-    public ConcurrentMap<Integer, com.admoin.action.type.app.get.Field> actionTypeAppGetField = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Propertie> actionTypeAppGetPropertie = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Upsert> actionTypeDatabaseQueryUpsert = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Select> actionTypeDatabaseQuerySelect = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, AwsS3> actionTypeFileDownloadAwsS3 = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, PublicFile> actionTypeFileDownloadPublicFile = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Exists> actionTypeFileExists = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Remove> actionTypeFileRemove = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Start> actionTypeFileStart = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Json> actionTypeJsonGetJson = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Value> actionTypeJsonGetValue = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Connection> actionTypeNetTestConnection = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Contains> actionTypeStringCompareContains = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Equals> actionTypeStringCompareEquals = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Less> actionTypeStringCompareLess = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, LessVersion> actionTypeStringCompareLessVersion = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Hex> actionTypeStringFormatHex = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Property> actionTypeSystemgetProperty = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Variable> actionTypeSystemgetVariable = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Text> actionTypeUrlGetText = new ConcurrentHashMap<>();
-    public ConcurrentMap<Integer, Unzip> actionTypeZipUnzip = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, com.admoin.action.type.app.get.Field> actionTypeAppGetField = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Propertie> actionTypeAppGetPropertie = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Upsert> actionTypeDatabaseQueryUpsert = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Select> actionTypeDatabaseQuerySelect = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, AwsS3> actionTypeFileDownloadAwsS3 = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, PublicFile> actionTypeFileDownloadPublicFile = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Exists> actionTypeFileExists = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Remove> actionTypeFileRemove = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Start> actionTypeFileStart = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Json> actionTypeJsonGetJson = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Value> actionTypeJsonGetValue = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Connection> actionTypeNetTestConnection = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Contains> actionTypeStringCompareContains = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Equals> actionTypeStringCompareEquals = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Less> actionTypeStringCompareLess = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, LessVersion> actionTypeStringCompareLessVersion = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Hex> actionTypeStringFormatHex = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Property> actionTypeSystemgetProperty = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Variable> actionTypeSystemgetVariable = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Text> actionTypeUrlGetText = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Unzip> actionTypeZipUnzip = new ConcurrentHashMap<>();
 
-    ConcurrentMap<Integer, Action> actionDataBase = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, Action> actionDataBase = new ConcurrentHashMap<>();
     List<Link> linkDataBase = new ArrayList<>();
     public static LocalDateTime timeToStart;
 
@@ -521,5 +521,9 @@ public class Host implements Serializable {
             }
         });
         return linkCheckNew;
+    }
+
+    public void setConfig(String key, String value) {
+        config.put(key, value);
     }
 }

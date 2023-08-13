@@ -156,7 +156,7 @@ public class App {
         oldVersionApp = host.isOldVersion(App.getAppVersionPropertyName());
         oldVersionConfig = host.isOldVersion(App.getConfigVersionPropertyName());
 
-        host.config.put("config_version", config.get(App.getConfigVersionPropertyName()));
+        host.setConfig("config_version", config.get(App.getConfigVersionPropertyName()));
 
         config.forEach((key, value) -> {
             try {
