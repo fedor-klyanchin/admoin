@@ -64,28 +64,30 @@ public class Connection implements Serializable {
         return port;
     }
 
+    private String getLogMessageForIsConnected() {
+        return "Action.isConnected( Name: " + address + ", Port: " + port + ")";
+    }
+
     public Boolean isConnected() throws UnknownHostException {
-        Log.logger.info("Action.isConnected( Name: " + address + ", Port: " + port + ") Start");
+        Log.logger.info(getLogMessageForIsConnected() + " Start");
         Boolean socketIsConnected = false;
         // https://docs.oracle.com/javase/7/docs/api/java/net/InetAddress.html
-            InetAddress name = InetAddress.getByName(address);
+        InetAddress name = InetAddress.getByName(address);
         try (
-
             // https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/lang/Integer.html#parseInt(java.lang.String)
             // https://stackoverflow.com/questions/5585779/how-do-i-convert-a-string-to-an-int-in-java
 
             // https://docs.oracle.com/javase/7/docs/api/java/net/Socket.html#isConnected()
-            Socket socket = new Socket(name, port);){
+            Socket socket = new Socket(name, port);) {
             socketIsConnected = socket.isConnected();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NumberFormatException e) {
-            Log.logger.info("Action.isConnected( Name: " + address + ", Port: " + port + ") Break");
+            Log.logger.info(getLogMessageForIsConnected() + " Break");
             Log.logger.warning(e.getMessage());
         }
-        
-        Log.logger.info("Action.isConnected( Name: " + address + ", Port: " + port + ") Return: "
-                + socketIsConnected);
+
+        Log.logger.info(getLogMessageForIsConnected() + " Return: " + socketIsConnected);
 
         return socketIsConnected;
     }
