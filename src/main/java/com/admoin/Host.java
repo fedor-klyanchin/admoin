@@ -64,7 +64,7 @@ public class Host implements Serializable {
 
     public static void setDataBaseReadOnly() {
         String yandexDataBaseReadOnlyConnectionString = Host.properties
-                .getProperty("yandex_data_base_read_only_connection_string");
+                .getProperty(namePropertyYandexDataBaseReadOnlyConnectionString);
         String yandexDataBaseReadOnlySaKeyFile = Host.properties.getProperty("yandex_data_base_read_only_sa_key_file");
 
         dataBaseReadOnly = new DataBase(yandexDataBaseReadOnlyConnectionString, yandexDataBaseReadOnlySaKeyFile);
@@ -76,7 +76,7 @@ public class Host implements Serializable {
 
     public static void setDataBaseReadWrite() {
         String yandexDataBaseReadWriteConnectionString = Host.properties
-                .getProperty("yandex_data_base_read_write_connection_string");
+                .getProperty(namePropertyYandexDataBaseReadWriteConnectionString);
         String yandexDataBaseReadWriteSaKeyFile = Host.properties
                 .getProperty("yandex_data_base_read_write_sa_key_file");
         dataBaseReadWrite = new DataBase(yandexDataBaseReadWriteConnectionString,
@@ -136,6 +136,8 @@ public class Host implements Serializable {
     private ConcurrentMap<Integer, Unzip> actionTypeZipUnzip = new ConcurrentHashMap<>();
 
     public static LocalDateTime timeToStart;
+    private static String namePropertyYandexDataBaseReadOnlyConnectionString = "yandex_data_base_read_only_connection_string";
+    private static String namePropertyYandexDataBaseReadWriteConnectionString = "yandex_data_base_read_write_connection_string";
 
     public Host() {
         id = Integer.parseInt(Host.properties.getProperty("id"));
@@ -208,19 +210,20 @@ public class Host implements Serializable {
 
     public boolean isOldVersion(String versionName) {
         boolean oldVersion = false;
-        String configVersion = null;
-        String hostVersion = null;
+        
+        String versionFromConfig = null;
+        String versionFromHost = null;
 
         if (getConfig() != null) {
-            configVersion = getConfig().get(versionName);
-            hostVersion = Host.properties.getProperty(versionName);
-            oldVersion = LessVersion.isLessVersion(hostVersion, configVersion);
+            versionFromConfig = getConfig().get(versionName);
+            versionFromHost = Host.properties.getProperty(versionName);
+            oldVersion = LessVersion.isLessVersion(versionFromHost, versionFromConfig);
         } else {
             oldVersion = false;
         }
 
-        Log.logger.info("isOldVersion() '" + versionName + "' hostVersion: " + hostVersion + " configVersion: "
-                + configVersion + " result: " + oldVersion);
+        Log.logger.info("isOldVersion() '" + versionName + "' hostVersion: " + versionFromHost + " configVersion: "
+                + versionFromConfig + " result: " + oldVersion);
         return oldVersion;
     }
 
@@ -385,13 +388,13 @@ public class Host implements Serializable {
             Properties propertiesDataBase = new Properties();
 
             String connectionStringDataBaseReadOnly = Host.properties
-                    .getProperty("yandex_data_base_read_only_connection_string");
+                    .getProperty(namePropertyYandexDataBaseReadOnlyConnectionString);
             String connectionStringDataBaseReadWrite = Host.properties
-                    .getProperty("yandex_data_base_read_write_connection_string");
+                    .getProperty(namePropertyYandexDataBaseReadWriteConnectionString);
 
-            propertiesDataBase.setProperty("yandex_data_base_read_only_connection_string",
+            propertiesDataBase.setProperty(namePropertyYandexDataBaseReadOnlyConnectionString,
                     connectionStringDataBaseReadOnly);
-            propertiesDataBase.setProperty("yandex_data_base_read_write_connection_string",
+            propertiesDataBase.setProperty(namePropertyYandexDataBaseReadWriteConnectionString,
                     connectionStringDataBaseReadWrite);
 
             Host.storeProperties(propertiesDataBase, Host.pathPropertiesDataBase);
