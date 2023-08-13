@@ -14,7 +14,7 @@ import com.admoin.action.type.Type;
 import com.admoin.action.type.file.Start;
 
 public class App {
-    public static final String APP_VERSION = "2.0.12";
+    public static final String APP_VERSION = "2.0.13";
 
     static Map<String, String> config = new HashMap<>();
     static boolean oldVersionApp;
