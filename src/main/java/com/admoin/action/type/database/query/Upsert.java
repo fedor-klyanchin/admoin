@@ -25,6 +25,8 @@ public class Upsert implements Serializable {
     private String resultTableName;
     private String resultTargetAction;
 
+    private Action action;
+
     public int getActionIdResult() {
         return actionIdResult;
     }
@@ -45,7 +47,7 @@ public class Upsert implements Serializable {
         this.resultTargetAction = resultTargetAction;
     }
 
-    public Upsert(int actionIdResult, 
+    public Upsert(int actionIdResult,
             String resultTablePath) {
         this.actionIdResult = actionIdResult;
         this.resultTablePath = resultTablePath;
@@ -80,11 +82,12 @@ public class Upsert implements Serializable {
     }
 
     public String start() {
-        String result = "false";
-        Action action = Action.map.get(actionIdResult);
+        String result;
+
+        action = Action.map.get(actionIdResult);
         setResultTargetAction(action.getResult());
 
-        Boolean isChangeResult = !action.getResult().equals(action.getResultOld());
+        Boolean isChangeResult = isChangeResult();
         Boolean isNotSynchronizedWithDatabase = Boolean.TRUE.equals(!action.getSynchronizedWithDatabase());
 
         if (isChangeResult || isNotSynchronizedWithDatabase) {
@@ -97,9 +100,32 @@ public class Upsert implements Serializable {
         return result;
     }
 
+    private boolean isChangeResult() {
+        if (action.getResultOld() == null ||
+                (!action.getResult().equals(action.getResultOld()) &&
+                        action.getResultOld().equals(""))) {
+            getResultOldFromDataBase();
+        }
+
+        return !action.getResult().equals(action.getResultOld());
+    }
+
+    private void getResultOldFromDataBase() {
+        Select actionSelect = new Select(resultTablePath);
+        String result = actionSelect.start();
+
+        if (!result.equals("")) {
+            action.setResultOld(result);
+
+            if (action.getResult().equals(action.getResultOld())) {
+                action.setSynchronizedWithDatabase(true);
+            }
+        }
+    }
+
     public String getQuery() {
         String columnNamehostId;
-        
+
         if (resultTableName.equals("host")) {
             columnNamehostId = "host_id";
         } else {
@@ -112,7 +138,8 @@ public class Upsert implements Serializable {
                 resultTableName + "_datetime" + "`, `" +
                 resultTableName + "_value"
                 + "` ) "
-                + "VALUES (" + Host.properties.getProperty("id") + ",CurrentUtcDatetime(),'" + resultTargetAction + "');";
+                + "VALUES (" + Host.properties.getProperty("id") + ",CurrentUtcDatetime(),'" + resultTargetAction
+                + "');";
     }
 
     public String getResult(Action action) {
