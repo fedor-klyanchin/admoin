@@ -156,7 +156,7 @@ public class App {
         oldVersionApp = host.isOldVersion(App.getAppVersionPropertyName());
         oldVersionConfig = host.isOldVersion(App.getConfigVersionPropertyName());
 
-        host.config.put("config_version",config.get(App.getConfigVersionPropertyName()));
+        host.config.put("config_version", config.get(App.getConfigVersionPropertyName()));
 
         config.forEach((key, value) -> {
             try {
@@ -177,21 +177,19 @@ public class App {
         }
     }
 
-    private static String getAppVersionFromProperty() {
-        return Host.properties.getProperty(App.getAppVersionPropertyName());
-    }
-
     private static String getPropertyHostId() {
         return Host.properties.getProperty("id");
     }
 
     static boolean isGetDataFromDataBase() {
-        return App.updateConfig || oldVersionApp || oldVersionConfig || Action.map.size() == 0 || Link.map.size() == 0 || Type.map.size() == 0 ||
-        isDatabaseConnectionStringChanged();
+        return App.updateConfig || oldVersionApp || oldVersionConfig || Action.map.size() == 0 || Link.map.size() == 0
+                || Type.map.size() == 0 ||
+                isDatabaseConnectionStringChanged();
     }
 
     static boolean isDatabaseConnectionStringChanged() {
-        return dataBaseReadOnlyConnectionString == null || !dataBaseReadOnlyConnectionString.equals(Host.properties.getProperty("yandex_data_base_read_only_connection_string",""));
+        return dataBaseReadOnlyConnectionString == null || !dataBaseReadOnlyConnectionString
+                .equals(Host.properties.getProperty("yandex_data_base_read_only_connection_string", ""));
     }
 
     public static String testStart() {
@@ -301,7 +299,7 @@ public class App {
 
         return dataAndUuid;
     }
-    
+
     static void setExitApp(Boolean value) {
         App.exitApp = value;
     }
