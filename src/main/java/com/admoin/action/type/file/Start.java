@@ -29,7 +29,7 @@ public class Start implements Serializable {
         Log.logger.info("new ActionFileStart[]");
         ConcurrentHashMap<Integer, Start> actionMap = new ConcurrentHashMap<>();
 
-        ResultSetReader result = Host.dataBaseReadOnly.getQuery("SELECT * FROM `?`".replace("?", tablePath));
+        ResultSetReader result = Host.getDataBaseReadOnly().getQuery("SELECT * FROM `?`".replace("?", tablePath));
 
         do {
             int actionId = DataBase.getColumnInt(result, "?_action_id".replace("?", tableName));

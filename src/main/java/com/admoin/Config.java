@@ -18,7 +18,7 @@ public class Config implements Serializable {
         Log.logger.info("Config.getFromDataBase()");
 
         Log.logger.info("yandexDataBaseReadOnly.get(query)");
-        ResultSetReader result = Host.dataBaseReadOnly.getQuery(query);
+        ResultSetReader result = Host.getDataBaseReadOnly().getQuery(query);
 
         map.clear();
         do {

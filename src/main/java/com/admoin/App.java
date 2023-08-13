@@ -131,7 +131,7 @@ public class App {
     }
 
     private static void startSync(Host host) throws Exception {
-        if (Boolean.TRUE.equals(Host.dataBaseReadOnly.isOpen())) {
+        if (Boolean.TRUE.equals(Host.getDataBaseReadOnly().isOpen())) {
             config = Config.getFromDataBase();
 
             if (config != null) {

@@ -52,7 +52,7 @@ public class Action implements Serializable {
                 + "FROM `action/action`";
 
         Log.logger.info("yandexDataBaseReadOnly.get(query)");
-        ResultSetReader result = Host.dataBaseReadOnly.getQuery(query);
+        ResultSetReader result = Host.getDataBaseReadOnly().getQuery(query);
 
         Log.logger.info("new action");
         ConcurrentHashMap<Integer, Action> actionMap = new ConcurrentHashMap<>();

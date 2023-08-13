@@ -67,7 +67,7 @@ public class Type implements Serializable {
                 + "`?_table_path`".replace("?", tableName)
                 + "FROM `" + tablePath + "`";
 
-        ResultSetReader result = Host.dataBaseReadOnly.getQuery(query);
+        ResultSetReader result = Host.getDataBaseReadOnly().getQuery(query);
 
         Log.logger.info("new Type[]");
         ConcurrentHashMap<Integer, Type> typeMap = new ConcurrentHashMap<>();

@@ -42,7 +42,7 @@ public class Select implements Serializable {
         Log.logger.info("new ActionAppGetField[]");
         ConcurrentHashMap<Integer, Select> actionMap = new ConcurrentHashMap<>();
 
-        ResultSetReader result = Host.dataBaseReadOnly.getQuery("SELECT * FROM `?`".replace("?", tablePath));
+        ResultSetReader result = Host.getDataBaseReadOnly().getQuery("SELECT * FROM `?`".replace("?", tablePath));
 
         do {
             int actionId = DataBase.getColumnInt(result, "?_action_id".replace("?", tableName));
@@ -74,7 +74,7 @@ public class Select implements Serializable {
                 + "WHERE `" + columnNamehostId + "` == " + Host.properties.getProperty("id") + ";";
 
         try {
-            ResultSetReader resultQuery = Host.dataBaseReadWrite.getQuery(query);
+            ResultSetReader resultQuery = Host.getDataBaseReadWrite().getQuery(query);
             result = DataBase.getColumnString(resultQuery, columnNameValue);
         } catch (Exception e) {
             Log.logger.warning(e.getMessage());

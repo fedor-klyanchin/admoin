@@ -1,5 +1,6 @@
 package com.admoin;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -18,7 +19,7 @@ import tech.ydb.table.transaction.TxControl;
 import tech.ydb.table.transaction.TxControl.TxSerializableRw;
 import tech.ydb.core.Result;
 
-public class DataBase {
+public class DataBase implements Serializable {
     private String connectionConfigFile;
     private String connectionString;
     private String saKeyFile;
@@ -53,13 +54,13 @@ public class DataBase {
     }
 
     public static void closeAll() {
-        Host.dataBaseReadOnly.close();
-        Host.dataBaseReadWrite.close();
+        Host.getDataBaseReadOnly().close();
+        Host.getDataBaseReadWrite().close();
     }
 
     public static void openAll() {
-        Host.dataBaseReadOnly.openIfClose();
-        Host.dataBaseReadWrite.openIfClose();
+        Host.getDataBaseReadOnly().openIfClose();
+        Host.getDataBaseReadWrite().openIfClose();
     }
 
     public void openIfClose() {

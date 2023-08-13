@@ -69,7 +69,7 @@ public class LessVersion extends Compare {
         Log.logger.info("new ActionStringCompareLessVersion[]");
         ConcurrentHashMap<Integer, LessVersion> actionMap = new ConcurrentHashMap<>();
 
-        ResultSetReader result = Host.dataBaseReadOnly.getQuery("SELECT * FROM `?`".replace("?", tablePath));
+        ResultSetReader result = Host.getDataBaseReadOnly().getQuery("SELECT * FROM `?`".replace("?", tablePath));
 
         do {
             int actionId = DataBase.getColumnInt(result, "?_action_id".replace("?", Type.getTableName(tablePath)));

@@ -69,14 +69,14 @@ public class DataBaseTest {
         JsonReader reader = new JsonReader(new FileReader("config-database-test.json"));
         configDataBaseTest = gson.fromJson(reader, configDataBaseTest.getClass());
 
-        Host.dataBaseReadOnly
+        Host.getDataBaseReadOnly()
                 .setConnectionString(configDataBaseTest.get("yandex_data_base_read_only_connection_string"));
-        Host.dataBaseReadOnly.setSaKeyFile(configDataBaseTest.get("yandex_data_base_read_only_sa_key_file"));
+        Host.getDataBaseReadOnly().setSaKeyFile(configDataBaseTest.get("yandex_data_base_read_only_sa_key_file"));
 
-        Host.dataBaseReadWrite.close();
-        Host.dataBaseReadWrite
+        Host.getDataBaseReadWrite().close();
+        Host.getDataBaseReadWrite()
                 .setConnectionString(configDataBaseTest.get("yandex_data_base_read_write_connection_string"));
-        Host.dataBaseReadWrite.setSaKeyFile(configDataBaseTest.get("yandex_data_base_read_write_sa_key_file"));
+        Host.getDataBaseReadWrite().setSaKeyFile(configDataBaseTest.get("yandex_data_base_read_write_sa_key_file"));
 
         DataBase.openAll();
     }
@@ -206,7 +206,7 @@ public class DataBaseTest {
                 + "FROM `" + "online_datetime" + "` "
                 + "WHERE `" + "online_datetime" + "_host_id` " + " == " + Host.properties.getProperty("id") + ";";
 
-        ResultSetReader resultQuery = Host.dataBaseReadWrite.getQuery(query);
+        ResultSetReader resultQuery = Host.getDataBaseReadWrite().getQuery(query);
 
         LocalDateTime localDateTimeNowFromDataBase;
         do {

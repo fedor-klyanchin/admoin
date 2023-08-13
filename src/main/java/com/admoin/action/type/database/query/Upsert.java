@@ -64,7 +64,7 @@ public class Upsert implements Serializable {
         Log.logger.info("new ActionAppGetField[]");
         ConcurrentHashMap<Integer, Upsert> actionMap = new ConcurrentHashMap<>();
 
-        ResultSetReader result = Host.dataBaseReadOnly.getQuery("SELECT * FROM `?`".replace("?", tablePath));
+        ResultSetReader result = Host.getDataBaseReadOnly().getQuery("SELECT * FROM `?`".replace("?", tablePath));
 
         do {
             int actionId = DataBase.getColumnInt(result, "?_action_id".replace("?", tableName));
@@ -93,7 +93,7 @@ public class Upsert implements Serializable {
         if (isChangeResult || isNotSynchronizedWithDatabase) {
 
             String query = this.getQuery();
-            result = Host.dataBaseReadWrite.sendQuery(query);
+            result = Host.getDataBaseReadWrite().sendQuery(query);
         } else {
             result = "true";
         }

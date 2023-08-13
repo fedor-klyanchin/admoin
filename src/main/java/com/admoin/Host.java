@@ -55,8 +55,33 @@ public class Host implements Serializable {
     public String configVersion = Host.properties.getProperty(App.getConfigVersionPropertyName());
     public static Properties properties;
 
-    public static DataBase dataBaseReadOnly = null;
-    public static DataBase dataBaseReadWrite = null;
+    private static DataBase dataBaseReadOnly;
+    private static DataBase dataBaseReadWrite;
+    
+    public static DataBase getDataBaseReadOnly() {
+        return dataBaseReadOnly;
+    }
+
+    public static void setDataBaseReadOnly() {
+        String yandexDataBaseReadOnlyConnectionString = Host.properties
+                .getProperty("yandex_data_base_read_only_connection_string");
+        String yandexDataBaseReadOnlySaKeyFile = Host.properties.getProperty("yandex_data_base_read_only_sa_key_file");
+
+        dataBaseReadOnly = new DataBase(yandexDataBaseReadOnlyConnectionString, yandexDataBaseReadOnlySaKeyFile);
+    }
+
+    public static DataBase getDataBaseReadWrite() {
+        return dataBaseReadWrite;
+    }
+
+    public static void setDataBaseReadWrite() {
+        String yandexDataBaseReadWriteConnectionString = Host.properties
+                .getProperty("yandex_data_base_read_write_connection_string");
+        String yandexDataBaseReadWriteSaKeyFile = Host.properties
+                .getProperty("yandex_data_base_read_write_sa_key_file");
+        dataBaseReadWrite = new DataBase(yandexDataBaseReadWriteConnectionString,
+                yandexDataBaseReadWriteSaKeyFile);
+    }
 
     // https://docs.oracle.com/javase/tutorial/essential/environment/properties.html
     private static Properties systemPropertyes = System.getProperties();
@@ -110,23 +135,13 @@ public class Host implements Serializable {
     private ConcurrentMap<Integer, Text> actionTypeUrlGetText = new ConcurrentHashMap<>();
     private ConcurrentMap<Integer, Unzip> actionTypeZipUnzip = new ConcurrentHashMap<>();
 
-    List<Link> linkDataBase = new ArrayList<>();
     public static LocalDateTime timeToStart;
 
     public Host() {
         id = Integer.parseInt(Host.properties.getProperty("id"));
 
-        String yandexDataBaseReadOnlyConnectionString = Host.properties
-                .getProperty("yandex_data_base_read_only_connection_string");
-        String yandexDataBaseReadOnlySaKeyFile = Host.properties.getProperty("yandex_data_base_read_only_sa_key_file");
-        Host.dataBaseReadOnly = new DataBase(yandexDataBaseReadOnlyConnectionString, yandexDataBaseReadOnlySaKeyFile);
-
-        String yandexDataBaseReadWriteConnectionString = Host.properties
-                .getProperty("yandex_data_base_read_write_connection_string");
-        String yandexDataBaseReadWriteSaKeyFile = Host.properties
-                .getProperty("yandex_data_base_read_write_sa_key_file");
-        Host.dataBaseReadWrite = new DataBase(yandexDataBaseReadWriteConnectionString,
-                yandexDataBaseReadWriteSaKeyFile);
+        setDataBaseReadOnly();
+        setDataBaseReadWrite();
     }
 
     public void setName(String newValue) {
@@ -143,8 +158,8 @@ public class Host implements Serializable {
                 + "LIMIT 1;";
 
         try {
-            Host.dataBaseReadWrite.getQuery(queryGetLastHost);
-            ResultSetReader resultQuery = Host.dataBaseReadWrite.getQuery(queryGetLastHost);
+            Host.getDataBaseReadWrite().getQuery(queryGetLastHost);
+            ResultSetReader resultQuery = Host.getDataBaseReadWrite().getQuery(queryGetLastHost);
 
             do {
                 lastId = (int) resultQuery.getColumn("host_id").getUint64();
@@ -171,7 +186,7 @@ public class Host implements Serializable {
                 + "VALUES (" + id + ",CurrentUtcDatetime(),\"" + hostName
                 + "\");";
 
-        Host.dataBaseReadWrite.sendQuery(query);
+        Host.getDataBaseReadWrite().sendQuery(query);
 
         propertiesId.setProperty("id", Integer.toString(id));
 
@@ -423,7 +438,7 @@ public class Host implements Serializable {
     public boolean isGetNewId() {
         boolean result = false;
         boolean isHostIdEqualsNull = this.isIdEqualsNull();
-        boolean isDataBaseReadWriteOpen = Host.dataBaseReadWrite.isOpen();
+        boolean isDataBaseReadWriteOpen = Host.getDataBaseReadWrite().isOpen();
 
         if (isHostIdEqualsNull && isDataBaseReadWriteOpen) {
             result = true;
@@ -452,13 +467,13 @@ public class Host implements Serializable {
                 + "` ) "
                 + "VALUES (" + Host.properties.getProperty("id") + ", CurrentUtcDatetime());";
 
-        Host.dataBaseReadWrite.sendQuery(query);
+        Host.getDataBaseReadWrite().sendQuery(query);
     }
 
     public boolean isReady() {
         Boolean result = true;
         boolean isHostIdEqualsNull = this.isIdEqualsNull();
-        boolean isDataBaseReadWriteNotOpen = !Host.dataBaseReadWrite.isOpen();
+        boolean isDataBaseReadWriteNotOpen = !Host.getDataBaseReadWrite().isOpen();
 
         if (isHostIdEqualsNull || isDataBaseReadWriteNotOpen) {
             result = false;

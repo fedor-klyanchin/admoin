@@ -75,7 +75,7 @@ public class Link implements Serializable {
                 + "FROM `action/link`";
 
         Log.logger.info("yandexDataBaseReadOnly.get(query)");
-        ResultSetReader result = Host.dataBaseReadOnly.getQuery(query);
+        ResultSetReader result = Host.getDataBaseReadOnly().getQuery(query);
 
         Log.logger.info("new Link[]");
         ConcurrentHashMap<Integer, List<Link>> linkMap = new ConcurrentHashMap<>();
