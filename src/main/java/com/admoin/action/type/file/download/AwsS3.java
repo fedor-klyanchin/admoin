@@ -120,17 +120,16 @@ public class AwsS3 implements Serializable {
                                 "storage.yandexcloud.net", "ru-central1"))
                 .build();
 
-        try {
+        try (FileOutputStream fos = new FileOutputStream(new File(objectLocalPath))){
             S3Object o = s3Client.getObject(bucketName, objectName);
             S3ObjectInputStream s3is = o.getObjectContent();
-            FileOutputStream fos = new FileOutputStream(new File(objectLocalPath));
+            
             byte[] readBuf = new byte[1024];
             int readLen = 0;
             while ((readLen = s3is.read(readBuf)) > 0) {
                 fos.write(readBuf, 0, readLen);
             }
             s3is.close();
-            fos.close();
         } catch (AmazonServiceException e) {
             Log.logger.warning(e.getErrorMessage());
         } catch (IOException e) {
