@@ -227,7 +227,7 @@ public class DataBaseTest {
         Boolean oldVersionApp = App.isOldVersionApp();
         Boolean oldVersionConfig = App.isOldVersionConfig();
         Boolean updateConfig = App.isUpdateConfig();
-        Boolean appIsGetDataFromDataBase = App.isGetDataFromDataBase();
+        Boolean appIsGetDataFromDataBase = App.isGetDataFromDataBase(host);
         Boolean appIsDatabaseConnectionStringChanged = App.isDatabaseConnectionStringChanged();
 
         AssertJUnit.assertTrue(
