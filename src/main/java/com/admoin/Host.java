@@ -51,6 +51,30 @@ public class Host implements Serializable {
         return name;
     }
 
+    public ConcurrentMap<Integer, Type> getActionTypeMap() {
+        return actionTypeMap;
+    }
+
+    public void setActionTypeMap(ConcurrentMap<Integer, Type> actionTypeMap) {
+        this.actionTypeMap = actionTypeMap;
+    }
+
+    public ConcurrentMap<Integer, List<Link>> getActionLinkMap() {
+        return actionLinkMap;
+    }
+
+    public void setActionLinkMap(ConcurrentMap<Integer, List<Link>> actionLinkMap) {
+        this.actionLinkMap = actionLinkMap;
+    }
+
+    public ConcurrentMap<Integer, Action> getActionMap() {
+        return actionMap;
+    }
+
+    public void setActionMap(ConcurrentMap<Integer, Action> actionMap) {
+        this.actionMap = actionMap;
+    }
+
     public String appVersion = App.APP_VERSION;
     public String configVersion = Host.properties.getProperty(App.getConfigVersionPropertyName());
     public static Properties properties;
@@ -270,13 +294,13 @@ public class Host implements Serializable {
 
     public void getDataFromDataBase() {
         Action.getFromDataBase();
-        actionMap = Action.map;
+        setActionMap(Action.map);
 
         Link.getFromDataBase();
-        actionLinkMap = Link.map;
+        setActionLinkMap(Link.map);
 
         Type.getFromDataBase();
-        actionTypeMap = Type.map;
+        setActionTypeMap(Type.map);
 
         com.admoin.action.type.app.get.Field.getFromDataBase();
         actionTypeAppGetField = com.admoin.action.type.app.get.Field.map;
@@ -345,9 +369,9 @@ public class Host implements Serializable {
     }
 
     public void getDataFromLocalStorage() {
-        Action.map = actionMap;
-        Link.map = actionLinkMap;
-        Type.map = actionTypeMap;
+        Action.map = getActionMap();
+        Link.map = getActionLinkMap();
+        Type.map = getActionTypeMap();
 
         com.admoin.action.type.app.get.Field.map = actionTypeAppGetField;
         com.admoin.action.type.app.get.Propertie.map = actionTypeAppGetPropertie;
