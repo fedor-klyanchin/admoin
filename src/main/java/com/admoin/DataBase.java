@@ -155,7 +155,6 @@ public class DataBase implements Serializable {
             Log.logger.info("DataBase.getQuery(query) End");
         } catch (Exception e) {
             Log.logger.warning(e.getMessage());
-            //App.setExitApp(true);
         }
 
         if (resultSet == null || !resultSet.next()) {
