@@ -140,7 +140,7 @@ public class App {
             }
         }
 
-        if (App.isGetDataFromDataBase()) {
+        if (App.isGetDataFromDataBase(host)) {
             host.getDataFromDataBase();
 
             Host.storeProperties(Host.properties, Host.pathPropertiesCurrent);
@@ -181,9 +181,9 @@ public class App {
         return Host.properties.getProperty("id");
     }
 
-    static boolean isGetDataFromDataBase() {
-        return App.updateConfig || oldVersionApp || oldVersionConfig || Action.map.size() == 0 || Link.map.size() == 0
-                || Type.map.size() == 0 ||
+    static boolean isGetDataFromDataBase(Host host) {
+        return App.updateConfig || oldVersionApp || oldVersionConfig || host.getActionMap().size() == 0 || host.getActionLinkMap().size() == 0
+                || host.getActionTypeMap().size() == 0 ||
                 isDatabaseConnectionStringChanged();
     }
 
