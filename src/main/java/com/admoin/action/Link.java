@@ -87,16 +87,20 @@ public class Link implements Serializable {
 
             Link link = new Link(fromId, toId, fromFalseResult);
 
-            List<Link> linkList = new ArrayList<>();
-            if (linkMap.contains(fromId)) {
-                linkList = linkMap.get(fromId);
-            }
-            linkList.add(link);
-            linkMap.put(fromId, linkList);
+            linkMap.put(fromId, getLinkList(linkMap, link));
 
             Log.logger.info("New Link. fromId: " + fromId + " toId: " + toId);
         } while (result.next());
 
         Link.map = linkMap;
+    }
+
+    public static List<Link> getLinkList(ConcurrentMap<Integer, List<Link>> linkMap, Link link) {
+        List<Link> linkList = new ArrayList<>();
+        if (linkMap.containsKey(link.getFromId())) {
+            linkList = linkMap.get(link.getFromId());
+        }
+        linkList.add(link);
+        return linkList;
     }
 }

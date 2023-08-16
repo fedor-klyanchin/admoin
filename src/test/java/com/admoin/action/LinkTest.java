@@ -14,8 +14,6 @@ import com.admoin.Log;
 
 public class LinkTest {
     private ConcurrentMap<Integer, List<Link>> linkMap = new ConcurrentHashMap<>();
-    private List<Link> linkList0 = new ArrayList<>();
-    private List<Link> linkList1 = new ArrayList<>();
 
     @Test
     @BeforeClass
@@ -23,22 +21,20 @@ public class LinkTest {
         Log.create();
         Host.getProperties();
 
-        Link link0 = new Link(0, 1, false);
-        Link link1 = new Link(1, 2, false);
-
-        linkList0.add(link0);
-        linkList1.add(link1);
-
-        linkMap.put(0, linkList0);
-        linkMap.put(1, linkList1);
-    }
+        linkMap.put(0, Link.getLinkList(linkMap, new Link(0, 1, false)));
+        linkMap.put(0, Link.getLinkList(linkMap, new Link(0, 1, false)));
+        linkMap.put(1, Link.getLinkList(linkMap, new Link(1, 2, false)));
+        linkMap.put(1, Link.getLinkList(linkMap, new Link(1, 3, false)));
+        linkMap.put(2, Link.getLinkList(linkMap, new Link(2, 4, false)));
+        linkMap.put(2, Link.getLinkList(linkMap, new Link(2, 5, false)));
+}
 
     @Test(groups = { "Link" })
-    public void newAction() {
+    public void newLink() {
         Boolean result = false;
 
-        for (Link linkItem : linkList1) {
-            if (linkItem.getFromId() == 1 && linkItem.getToId() == 2 && Boolean.FALSE.equals(linkItem.getFromFalseResult())) {
+        for (Link linkItem : linkMap.get(2)) {
+            if (linkItem.getFromId() == 2 && linkItem.getToId() == 4 && Boolean.FALSE.equals(linkItem.getFromFalseResult())) {
                 result = true;
             }
         }
@@ -48,7 +44,13 @@ public class LinkTest {
 
     @Test(groups = { "Link" })
     public void linkMapWithoutIncorrectElement() {
-        int listLinkSize = linkMap.get(0).size();
-        AssertJUnit.assertTrue(listLinkSize == 1);
+        AssertJUnit.assertTrue(
+            linkMap.get(0).size() == 2 &&
+            linkMap.get(1).size() == 2 &&
+            linkMap.get(2).size() == 2 &&
+            linkMap.get(3) == null &&
+            linkMap.get(4) == null &&
+            linkMap.get(5) == null
+            );
     }
 }
